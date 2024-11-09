@@ -19,7 +19,6 @@ struct ContentView: View {
                 .onAppear(perform: {
                     viewModel.checkIfLocationIsEnabled()
                 })
-            
         }
     }
 }
