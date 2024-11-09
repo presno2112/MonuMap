@@ -45,8 +45,8 @@
 		F8AA8FD22CDD073C00C00233 = {
 			isa = PBXGroup;
 			children = (
-				F8AA8FDD2CDD073C00C00233 /* MonuMap */,
 				F8AA8FDC2CDD073C00C00233 /* Products */,
+				F8AA8FDD2CDD073C00C00233 /* MonuMap */,
 			);
 			sourceTree = "<group>";
 		};
