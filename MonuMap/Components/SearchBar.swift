@@ -17,7 +17,7 @@ struct SearchBar: View {
                 Image(systemName: "xmark.circle.fill")
                     .imageScale(.medium)
                     .foregroundColor(Color(.systemGray3))
-                    .padding(3)
+                    .padding(.horizontal, 3)
                     .onTapGesture {
                         withAnimation {
                             self.searchText = ""
