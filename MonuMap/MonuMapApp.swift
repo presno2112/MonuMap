@@ -22,12 +22,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct MonuMapApp: App {
   // register app delegate for Firebase setup
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    @State private var appController = AppController()
 
 
   var body: some Scene {
     WindowGroup {
       NavigationView {
-        MapView()
+          AuthView()
+              .environment(appController)
       }
     }
   }
