@@ -23,10 +23,11 @@ struct MapView: View {
                 }
         }
         .sheet(isPresented: $isSheetPresented) {
-            // Display SearchView in a sheet with transparent background
             SearchView(isSheetPresented: $isSheetPresented)
                 .presentationDetents([.height(40), .medium, .large])
                 .presentationBackgroundInteraction(.enabled)
+                .interactiveDismissDisabled() // makes sure the sheet cant be dismissed
+            
         }
 //        .environment(\.colorScheme, .dark)
     }
