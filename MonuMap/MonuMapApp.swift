@@ -29,8 +29,11 @@ struct MonuMapApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationView {
-          AuthView()
+          ContentView()
               .environment(appController)
+              .onAppear{
+                  appController.listenToAuthChanges()
+              }
       }
     }
   }
