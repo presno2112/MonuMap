@@ -11,7 +11,7 @@ struct SearchView: View {
     @Binding var isSheetPresented: Bool
     @State var searchText: String = ""
     @State private var currentHeight: CGFloat = 0
-    @Environment(AppController.self) private var appController
+//    @Environment(AppController.self) private var appController
 
     var body: some View {
         GeometryReader { geometry in
@@ -31,11 +31,11 @@ struct SearchView: View {
                 .padding(.top, currentHeight <= 50 ? 0 : 10)
                 
                 Button{
-                    do{
-                        try appController.signOut()
-                    } catch{
-                        print(error.localizedDescription)
-                    }
+//                    do{
+//                        try appController.signOut()
+//                    } catch{
+//                        print(error.localizedDescription)
+//                    }
                 }label: {
                     Text("Log Out")
                 }
