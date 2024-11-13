@@ -17,8 +17,10 @@ struct ContentView: View {
                 ProgressView()
             case .notAuthenticated:
                 AuthView()
+                    .ignoresSafeArea()
             case .authenticated:
                 MapView()
+                    .edgesIgnoringSafeArea(.top)
             }
         }
     }
