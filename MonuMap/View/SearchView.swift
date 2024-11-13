@@ -30,6 +30,9 @@ struct SearchView: View {
                 .padding(.horizontal)
                 .padding(.top, currentHeight <= 50 ? 0 : 10)
                 
+                CityMonumentsView()
+                CityMonumentsView()
+                
                 Button{
 //                    do{
 //                        try appController.signOut()
