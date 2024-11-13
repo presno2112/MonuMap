@@ -56,17 +56,13 @@ struct MonumentView: View {
 }
 
 struct CityMonumentsView: View {
-    var cityName: String = "Napoli"
-    var monuments: [(image: UIImage, title: String, description: String)] = [
-        (UIImage(named: "coliseo")!, "Eiffel Tower", "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum"),
-        (UIImage(named: "coliseo")!, "Louvre Museum", "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum"),
-        (UIImage(named: "coliseo")!, "Notre Dame Cathedral", "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum")
-    ]
+    var cityName: String
+    var monuments: [(image: UIImage, title: String, description: String)]
     
     var body: some View {
         VStack(alignment: .leading) {
             // City name at the top
-            Text("Napoli")
+            Text(cityName)
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding(.top, 12)
@@ -90,5 +86,5 @@ struct CityMonumentsView: View {
 }
 
 #Preview {
-    CityMonumentsView()
+    CityMonumentsView(cityName: "Paris", monuments: [])
 }

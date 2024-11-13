@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchBar: View {
-    @State var searchText: String = ""
+    @Binding var searchText: String
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass").foregroundColor(.secondary)
@@ -33,5 +33,6 @@ struct SearchBar: View {
 }
 
 #Preview {
-    SearchBar()
+    @Previewable @State var searchText: String = ""
+    SearchBar(searchText: $searchText)
 }
