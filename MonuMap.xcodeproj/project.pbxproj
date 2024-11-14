@@ -45,8 +45,8 @@
 		F8AA8FD22CDD073C00C00233 = {
 			isa = PBXGroup;
 			children = (
-				F8AA8FDD2CDD073C00C00233 /* MonuMap */,
 				F8AA8FDC2CDD073C00C00233 /* Products */,
+				F8AA8FDD2CDD073C00C00233 /* MonuMap */,
 			);
 			sourceTree = "<group>";
 		};
@@ -273,10 +273,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MonuMap/Preview Content\"";
-				DEVELOPMENT_TEAM = W999EC9MFZ;
+				DEVELOPMENT_TEAM = 7MLM8NTU75;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = Camara;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "MonuMap needs your location to help you find spots around the city";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -288,7 +287,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = gusvasquez.MonuMap;
+				PRODUCT_BUNDLE_IDENTIFIER = sebastianpresno.MonuMap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -304,10 +303,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MonuMap/Preview Content\"";
-				DEVELOPMENT_TEAM = W999EC9MFZ;
+				DEVELOPMENT_TEAM = 7MLM8NTU75;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = Camara;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "MonuMap needs your location to help you find spots around the city";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -319,7 +317,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = gusvasquez.MonuMap;
+				PRODUCT_BUNDLE_IDENTIFIER = sebastianpresno.MonuMap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

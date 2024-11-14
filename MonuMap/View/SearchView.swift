@@ -15,8 +15,7 @@ struct SearchView: View {
     @State var selectedImage: UIImage?
     @State var detectionResult: String?
     var classifier = Classifier()
-    @State private var currentHeight: CGFloat = 0
-//    @Environment(AppController.self) private var appController
+    //    @Environment(AppController.self) private var appController
     
     // Example list of monuments
     var monuments: [(image: UIImage, title: String, description: String)] = [
@@ -33,7 +32,7 @@ struct SearchView: View {
             return monuments.filter { $0.title.lowercased().contains(searchText.lowercased()) }
         }
     }
-
+    
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
@@ -53,32 +52,33 @@ struct SearchView: View {
                 if let result = detectionResult {
                     Text("Resultado: \(result)")
                         .padding()
-                if filteredMonuments.count == 0 && searchText != "" {
-                    Text("No results")
+                    if filteredMonuments.count == 0 && searchText != "" {
+                        Text("No results")
+                    }
                 }
-                else {
-                    CityMonumentsView(cityName: "Roma", monuments: filteredMonuments)
-                    CityMonumentsView(cityName: "Napoli", monuments: filteredMonuments)
-                }
-                
-                Button{
-//                    do{
-//                        try appController.signOut()
-//                    } catch{
-//                        print(error.localizedDescription)
-//                    }
-                }label: {
-                    Text("Log Out")
-                }
-                
-                if let selectedImage = selectedImage {
-                    Image(uiImage: selectedImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 300, height: 300)
-                }
-                
-                Spacer()
+                    else {
+                        CityMonumentsView(cityName: "Roma", monuments: filteredMonuments)
+                        CityMonumentsView(cityName: "Napoli", monuments: filteredMonuments)
+                    }
+                    
+                    Button{
+                        //                    do{
+                        //                        try appController.signOut()
+                        //                    } catch{
+                        //                        print(error.localizedDescription)
+                        //                    }
+                    }label: {
+                        Text("Log Out")
+                    }
+                    
+                    if let selectedImage = selectedImage {
+                        Image(uiImage: selectedImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 300, height: 300)
+                    }
+                    
+                    Spacer()
             }
             .sheet(isPresented: $showImagePicker) {
                 ImagePicker(selectedImage: $selectedImage)

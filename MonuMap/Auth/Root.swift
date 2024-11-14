@@ -12,19 +12,14 @@ struct Root: View {
     @State private var showSignIn: Bool = false
     
     var body: some View {
-        ZStack{
-            NavigationStack{
-                MapView(showSignInView: $showSignIn)
+        MapView()
+            .edgesIgnoringSafeArea(.top)
+            .onAppear(){
+                let authUser = try? AuthenticationManager.shared.getAuthenticadedUser()
+                self.showSignIn = authUser == nil
             }
-        }
-        .onAppear(){
-            let authUser = try? AuthenticationManager.shared.getAuthenticadedUser()
-            self.showSignIn = authUser == nil
-        }
-        .fullScreenCover(isPresented: $showSignIn){
-            NavigationStack{
-                LogInView(showSignIn: $showSignIn)
-            }
+            .fullScreenCover(isPresented: $showSignIn){
+                    LogInView(showSignIn: $showSignIn)
         }
     }
 }
