@@ -120,58 +120,92 @@ struct MapView: View {
             picture: "https://example.com/damichele.jpg",
             location: "Naples",
             coordinates: GeoPoint(latitude: 40.8478, longitude: 14.2624)
+        ),
+        Monument(
+            name: "Cupertino",
+            creator: nil,
+            date: Date(),
+            description: "Test location",
+            picture: "https://example.com/damichele.jpg",
+            location: "San Francisco",
+            coordinates: GeoPoint(latitude: 37.317165398, longitude: -122.038499846)
         )
     ]
-    
-    @StateObject var viewModel = ContentViewModel()
-    @State private var isSheetPresented: Bool = true
-    @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
-    
-    var body: some View {
-        VStack {
-            Map(position: $cameraPosition) {
-                UserAnnotation()
-                ForEach(monuments, id: \.id) { monument in // Use id explicitly
-                    let coordinate = monument.coordinates.toCLLocationCoordinate2D()
-                    Annotation(monument.name ,coordinate: coordinate) {
-                        Button(action: {
-                            // Update camera position to the tapped marker's coordinates
-                            cameraPosition = .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
-                        }) {
-                            Circle()
-                                .frame(width: 20, height: 20)
+        
+        @StateObject var viewModel = ContentViewModel()
+        @State private var isSheetPresented: Bool = true
+        @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
+        
+        // State to manage pop-up visibility and selected monument details
+        @State private var selectedMonument: Monument? = nil
+        @State private var isPopupVisible: Bool = false
+        
+        var body: some View {
+            ZStack {
+                VStack {
+                    Map(position: $cameraPosition) {
+                        UserAnnotation()
+                        ForEach(monuments, id: \.id) { monument in
+                            let coordinate = monument.coordinates.toCLLocationCoordinate2D()
+                            Annotation(monument.name, coordinate: coordinate) {
+                                Button(action: {
+                                    // Show pop-up and set selected monument
+                                    selectedMonument = monument
+                                    isPopupVisible = true
+                                    
+                                    // Update camera position to focus on the tapped marker
+                                    cameraPosition = .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+                                }) {
+                                    Circle()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(.blue)
+                                }
+                            }
                         }
                     }
-                    //{
-//                        Text(monument.name)
-//                            .font(.headline)
-//                            .padding()
-//                            .background(.blue)
-//                            .foregroundStyle(.white)
-//                            .clipShape(Capsule())
-//                    }
+                    .disabled(isPopupVisible) // Disable map interaction when popup is visible
+                    .edgesIgnoringSafeArea(.top)
+                    .frame(maxHeight: .infinity)
+                    .onAppear {
+                        viewModel.checkIfLocationIsEnabled()
+                    }
+                }
+                .sheet(isPresented: $isSheetPresented) {
+                    SearchView(isSheetPresented: $isSheetPresented)
+                        .presentationDetents([.height(40), .medium, .large])
+                        .presentationBackgroundInteraction(.enabled)
+                        .interactiveDismissDisabled()
+                }
+                
+                // Display PlacePopupView when a monument is selected
+                if isPopupVisible, let monument = selectedMonument {
+                    MonumentDetail(
+                        isPresented: $isPopupVisible,
+                        placeName: monument.name,
+                        onGetBadge: {
+                            print("Get Badge tapped for \(monument.name)")
+                            isPopupVisible = false // Hide popup if needed
+                        },
+                        onAddToWishlist: {
+                            print("Add to Wishlist tapped for \(monument.name)")
+                            isPopupVisible = false // Hide popup if needed
+                        }
+                    )
+                    .transition(.move(edge: .bottom))
+                    .animation(.spring())
+                    .frame(width: 180) // Adjust the width as needed
+                    .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 4)
+                    .transition(.scale) // Smooth transition
                 }
             }
-            .edgesIgnoringSafeArea(.top)
-            .frame(maxHeight: .infinity)
-            .onAppear {
-                viewModel.checkIfLocationIsEnabled()
-            }
-        }
-        .sheet(isPresented: $isSheetPresented) {
-            SearchView(isSheetPresented: $isSheetPresented)
-                .presentationDetents([.height(40), .medium, .large])
-                .presentationBackgroundInteraction(.enabled)
-                .interactiveDismissDisabled() // prevents dismissing the sheet
         }
     }
-}
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapView()
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            MapView()
+        }
     }
-}
 
 
 extension GeoPoint {
