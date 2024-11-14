@@ -9,18 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @Environment(AppController.self) private var appController
+//    @Environment(AppController.self) private var appController
     var body: some View {
-        Group{
-            switch appController.authState{
-            case .undefined:
-                ProgressView()
-            case .notAuthenticated:
-                AuthView()
-            case .authenticated:
-                MapView()
-            }
-        }
+        Root()
+//        Group{
+//            switch appController.authState{
+//            case .undefined:
+//                ProgressView()
+//            case .notAuthenticated:
+//                AuthView()
+//            case .authenticated:
+//                MapView()
+//            }
+//        }
     }
 }
 

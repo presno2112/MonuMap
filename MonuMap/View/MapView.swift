@@ -12,6 +12,8 @@ struct MapView: View {
     
     @StateObject var viewModel = ContentViewModel()
     @State private var isSheetPresented: Bool = true
+    @Binding var showSignInView: Bool
+    
     
     var body: some View {
         VStack {
@@ -22,6 +24,7 @@ struct MapView: View {
                     viewModel.checkIfLocationIsEnabled()
                 }
         }
+        
         .sheet(isPresented: $isSheetPresented) {
             SearchView(isSheetPresented: $isSheetPresented)
                 .presentationDetents([.height(40), .medium, .large])
@@ -31,11 +34,14 @@ struct MapView: View {
         }
 //        .environment(\.colorScheme, .dark)
     }
+    
 }
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        MapView()
+        MapView(showSignInView: .constant(false))
     }
 }
 

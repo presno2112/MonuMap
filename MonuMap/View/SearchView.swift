@@ -10,8 +10,11 @@ import SwiftUI
 struct SearchView: View {
     @Binding var isSheetPresented: Bool
     @State var searchText: String = ""
-    @State private var currentHeight: CGFloat = 0
-//    @Environment(AppController.self) private var appController
+    @State var currentHeight: CGFloat = 0
+    @State var showImagePicker = false
+    @State var selectedImage: UIImage?
+    @State var detectionResult: String?
+    var classifier = Classifier()
 
     var body: some View {
         GeometryReader { geometry in
@@ -20,7 +23,7 @@ struct SearchView: View {
                     SearchBar()
                         .padding(.leading)
                     Button {
-                        
+                        showImagePicker = true
                     } label: {
                         Image(systemName: "camera.circle.fill")
                             .font(.largeTitle)
@@ -30,22 +33,35 @@ struct SearchView: View {
                 .padding(.horizontal)
                 .padding(.top, currentHeight <= 50 ? 0 : 10)
                 
-                Button{
-//                    do{
-//                        try appController.signOut()
-//                    } catch{
-//                        print(error.localizedDescription)
-//                    }
-                }label: {
-                    Text("Log Out")
+                if let result = detectionResult {
+                    Text("Resultado: \(result)")
+                        .padding()
                 }
+                
+                if let selectedImage = selectedImage {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 300, height: 300)
+                }
+                
                 Spacer()
+            }
+            .sheet(isPresented: $showImagePicker) {
+                ImagePicker(selectedImage: $selectedImage)
             }
             .onAppear {
                 currentHeight = geometry.size.height
             }
             .onChange(of: geometry.size.height) { newHeight in
                 currentHeight = newHeight
+            }
+            .onChange(of: selectedImage) { newImage in
+                if let uiImage = newImage, let ciImage = CIImage(image: uiImage) {
+                    var classifierInstance = classifier // Creando una instancia mutable
+                    classifierInstance.detect(ciImage: ciImage)
+                    detectionResult = classifierInstance.results
+                }
             }
         }
     }
