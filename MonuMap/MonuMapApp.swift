@@ -10,31 +10,29 @@ import FirebaseCore
 
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-
-    return true
-  }
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        
+        return true
+    }
 }
 
 @main
 struct MonuMapApp: App {
-  // register app delegate for Firebase setup
-  @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    // register app delegate for Firebase setup
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @State private var appController = AppController()
-
-
-  var body: some Scene {
-    WindowGroup {
-      NavigationView {
-          ContentView()
-              .environment(appController)
-              .onAppear{
-                  appController.listenToAuthChanges()
-              }
-      }
+    
+    
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .environment(appController)
+                .onAppear{
+                    appController.listenToAuthChanges()
+            }
+        }
     }
-  }
 }
