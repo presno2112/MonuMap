@@ -18,7 +18,7 @@ struct WishlistView: View {
         NavigationStack{
             VStack{
                 HStack{
-                    SearchBar()
+                    SearchBar(searchText: $searchText)
                         .padding(.leading)
                     Menu{
                         Button("By date", action: placeOrder)
