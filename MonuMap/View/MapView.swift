@@ -151,10 +151,13 @@ struct MapView: View {
                             Button(action: {
                                 // Show pop-up and set selected monument
                                 selectedMonument = monument
+                                isSheetPresented = false
                                 isPopupVisible = true
                                 
                                 // Update camera position to focus on the tapped marker
-                                cameraPosition = .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+                                withAnimation(.easeInOut(duration: 1.0)) {
+                                    cameraPosition = .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+                                }
                             }) {
                                 Circle()
                                     .frame(width: 20, height: 20)
@@ -180,6 +183,7 @@ struct MapView: View {
             // Display PlacePopupView when a monument is selected
             if isPopupVisible, let monument = selectedMonument {
                 MonumentDetail(
+                    isSheetPresented: $isSheetPresented,
                     isPresented: $isPopupVisible,
                     placeName: monument.name,
                     onGetBadge: {
@@ -196,6 +200,46 @@ struct MapView: View {
                 .frame(width: 180) // Adjust the width as needed
                 .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 3)
                 .transition(.scale) // Smooth transition
+            }
+            else{
+                VStack {
+                    HStack {
+                        Spacer()
+                        VStack {
+                            Button(action: {
+                                // Profile button action
+                            }) {
+                                ZStack{
+                                    Circle()
+                                        .frame(width: 40, height: 40)
+                                    Image(systemName: "person.circle.fill")
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            .padding(.top, 50)
+                            .padding(.trailing, 16)
+                            
+                            Button(action: {
+                                // Wishlist button action
+                            }) {
+                                ZStack{
+                                    Circle()
+                                        .frame(width: 40, height: 40)
+                                    Image(systemName: "heart.text.square.fill")
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            .padding(.trailing, 16)
+                            .padding(.top, 8)
+                        }
+                    }
+                    Spacer()
+                }
+                .padding(.top, 40)
             }
         }
         .sheet(isPresented: $isSheetPresented) {
