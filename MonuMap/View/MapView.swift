@@ -199,12 +199,23 @@ struct MapView: View {
                 }
             }
         }
-    }
-
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            MapView()
+        .sheet(isPresented: $isSheetPresented) {
+            SearchView(isSheetPresented: $isSheetPresented)
+                .presentationDetents([.height(40), .medium, .large])
+                .presentationBackgroundInteraction(.enabled)
+                .interactiveDismissDisabled() // makes sure the sheet cant be dismissed
+            
         }
+//        .environment(\.colorScheme, .dark)
+    }
+    
+}
+
+
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        MapView(showSignInView: .constant(false))
     }
 
 
