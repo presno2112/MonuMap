@@ -60,17 +60,6 @@ struct SearchView: View {
                         CityMonumentsView(cityName: "Roma", monuments: filteredMonuments)
                         CityMonumentsView(cityName: "Napoli", monuments: filteredMonuments)
                     }
-                    
-                    Button{
-                        //                    do{
-                        //                        try appController.signOut()
-                        //                    } catch{
-                        //                        print(error.localizedDescription)
-                        //                    }
-                    }label: {
-                        Text("Log Out")
-                    }
-                    
                     if let selectedImage = selectedImage {
                         Image(uiImage: selectedImage)
                             .resizable()
