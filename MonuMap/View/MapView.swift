@@ -16,7 +16,7 @@ struct MapView: View {
         Monument(
             name: "Roman Colosseum",
             creator: nil,
-            date: Date(),
+            //date: Date(),
             description: "Ancient amphitheater in Rome.",
             picture: "https://example.com/colosseum.jpg",
             location: "Rome",
@@ -25,7 +25,7 @@ struct MapView: View {
         Monument(
             name: "Fontana di Trevi",
             creator: nil,
-            date: Date(),
+            //date: Date(),
             description: "Famous Baroque fountain in Rome.",
             picture: "https://example.com/trevi.jpg",
             location: "Rome",
@@ -34,7 +34,7 @@ struct MapView: View {
         Monument(
             name: "Castel Sant'Angelo",
             creator: nil,
-            date: Date(),
+            //date: Date(),
             description: "Historic castle and museum.",
             picture: "https://example.com/santangelo.jpg",
             location: "Rome",
@@ -43,7 +43,7 @@ struct MapView: View {
         Monument(
             name: "Basilica di San Pietro",
             creator: "Michelangelo",
-            date: Date(),
+            //date: Date(),
             description: "St. Peter's Basilica in Vatican City.",
             picture: "https://example.com/stpeter.jpg",
             location: "Rome",
@@ -52,7 +52,7 @@ struct MapView: View {
         Monument(
             name: "Piazza di Spagna",
             creator: nil,
-            date: Date(),
+            //date: Date(),
             description: "Famous Spanish Steps in Rome.",
             picture: "https://example.com/spanishsteps.jpg",
             location: "Rome",
@@ -61,7 +61,7 @@ struct MapView: View {
         Monument(
             name: "Bocca della Verità",
             creator: nil,
-            date: Date(),
+            //date: Date(),
             description: "Ancient stone mask.",
             picture: "https://example.com/bocca.jpg",
             location: "Rome",
@@ -70,7 +70,7 @@ struct MapView: View {
         Monument(
             name: "Monumento a Vittorio Emanuele II",
             creator: nil,
-            date: Date(),
+            //date: Date(),
             description: "Monument in honor of Victor Emmanuel II.",
             picture: "https://example.com/vittorio.jpg",
             location: "Rome",
@@ -79,7 +79,7 @@ struct MapView: View {
         Monument(
             name: "Maradona Mural",
             creator: nil,
-            date: Date(),
+            //date: Date(),
             description: "Mural dedicated to Diego Maradona.",
             picture: "https://example.com/maradona.jpg",
             location: "Naples",
@@ -88,7 +88,7 @@ struct MapView: View {
         Monument(
             name: "Cathedral of San Gennaro",
             creator: nil,
-            date: Date(),
+            //date: Date(),
             description: "Naples Cathedral.",
             picture: "https://example.com/cathedral.jpg",
             location: "Naples",
@@ -97,7 +97,7 @@ struct MapView: View {
         Monument(
             name: "Castel Nuovo",
             creator: nil,
-            date: Date(),
+            //date: Date(),
             description: "Medieval castle in Naples.",
             picture: "https://example.com/nuovo.jpg",
             location: "Naples",
@@ -106,7 +106,7 @@ struct MapView: View {
         Monument(
             name: "Pulcinella Statue",
             creator: nil,
-            date: Date(),
+//            date: Date(),
             description: "Statue of Pulcinella.",
             picture: "https://example.com/pulcinella.jpg",
             location: "Naples",
@@ -115,7 +115,7 @@ struct MapView: View {
         Monument(
             name: "Pizzeria Da Michele",
             creator: nil,
-            date: Date(),
+//            date: Date(),
             description: "Historic pizzeria in Naples.",
             picture: "https://example.com/damichele.jpg",
             location: "Naples",
@@ -124,7 +124,7 @@ struct MapView: View {
         Monument(
             name: "Cupertino",
             creator: nil,
-            date: Date(),
+//            date: Date(),
             description: "Test location",
             picture: "https://example.com/damichele.jpg",
             location: "San Francisco",

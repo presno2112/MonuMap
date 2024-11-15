@@ -273,7 +273,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MonuMap/Preview Content\"";
-				DEVELOPMENT_TEAM = 7MLM8NTU75;
+				DEVELOPMENT_TEAM = 885YM3RRXJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "MonuMap needs your location to help you find spots around the city";
@@ -303,7 +303,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MonuMap/Preview Content\"";
-				DEVELOPMENT_TEAM = 7MLM8NTU75;
+				DEVELOPMENT_TEAM = 885YM3RRXJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "MonuMap needs your location to help you find spots around the city";
