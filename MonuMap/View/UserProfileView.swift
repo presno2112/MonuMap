@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct UserProfileView: View {
+    @State var showCard: Bool = false
     var rectangles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     
     let columns = [
@@ -30,12 +31,23 @@ struct UserProfileView: View {
                     
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(rectangles, id: \.self) { index in
-                            BadgeView()
+                            Button{
+                                withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                                    showCard.toggle()
+                                }
+                            }label: {
+                                    BadgeView()
+                                }
                         }
                     }
                     .padding()
                 }
             }
+        }
+        .sheet(isPresented: $showCard) {
+            FlipCard(showCard: $showCard)
+                .transition(.scale(scale: 0.1, anchor: .center)) // Scale transition for pop effect
+                .animation(.spring(response: 0.5, dampingFraction: 0.7))
         }
     }
 }
