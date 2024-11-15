@@ -107,6 +107,17 @@ struct LogInView: View {
     }
 }
 
+struct TopLabeledStyleConfig: LabeledContentStyle {
+
+    func makeBody(configuration: Configuration) -> some View {
+        VStack(alignment: .leading) {
+            configuration.label
+                .font(.caption)
+            configuration.content
+        }
+    }
+}
+
 #Preview {
     LogInView(showSignIn: .constant(true))
 }

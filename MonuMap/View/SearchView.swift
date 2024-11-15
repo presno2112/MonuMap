@@ -57,8 +57,10 @@ struct SearchView: View {
                     }
                 }
                     else {
-                        CityMonumentsView(cityName: "Roma", monuments: filteredMonuments)
-                        CityMonumentsView(cityName: "Napoli", monuments: filteredMonuments)
+                        CityMonumentsView()
+//                        CityMonumentsView(cityName: "Napoli")
+//                        CityMonumentsView(cityName: "Roma", monuments: filteredMonuments)
+//                        CityMonumentsView(cityName: "Napoli", monuments: filteredMonuments)
                     }
                     if let selectedImage = selectedImage {
                         Image(uiImage: selectedImage)

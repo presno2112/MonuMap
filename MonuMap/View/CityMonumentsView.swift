@@ -8,83 +8,106 @@
 import SwiftUI
 
 struct MonumentView: View {
-    var image: UIImage
-    var title: String
-    var description: String
+    let monument: Monument
     
     @State private var isHeartFilled = false // State to track heart status
     
     var body: some View {
-        VStack(spacing: 8) { // Horizontal stack for image and text
+        VStack(spacing: 8) {
             ZStack(alignment: .topTrailing) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 200, height: 120) // Image size
-                    .clipped()
-                    .cornerRadius(8) // Optional: Corner radius for image
-                
+                // Imagen del monumento
+                AsyncImage(url: URL(string: monument.picture)) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    Color.gray.opacity(0.3)
+                }
+                .frame(width: 200, height: 120)
+                .clipped()
+                .cornerRadius(8)
+
+                // Botón de favorito
                 Button(action: {
                     isHeartFilled.toggle()
                 }) {
-                    Image(systemName: isHeartFilled ? "heart.fill" : "heart") // Show filled or unfilled heart
+                    Image(systemName: isHeartFilled ? "heart.fill" : "heart")
                         .resizable()
-                        .frame(width: 15, height: 15) // Adjust size of the heart icon
-                        .foregroundColor(.blue) // Heart color
-                        .padding(8) // Padding around the heart icon
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.blue)
+                        .padding(8)
                         .background(Color.white.opacity(0.8))
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .clipShape(Circle())
                 }
-                .buttonStyle(PlainButtonStyle())
+                .padding(8)
             }
             
             VStack(alignment: .leading, spacing: 8) {
-                Text(title)
+                Text(monument.name)
                     .font(.subheadline)
                     .fontWeight(.bold)
-                    .lineLimit(1) // To ensure the title doesn't overflow
+                    .lineLimit(1)
                 
-                Text(description)
+                Text(monument.description)
                     .font(.caption)
                     .foregroundColor(.gray)
-                    .lineLimit(nil) // Allow multiple lines for the description
+                    .lineLimit(2)
                     .multilineTextAlignment(.leading)
             }
-            .padding([.leading, .trailing], 8)
+            .padding(.horizontal, 8)
         }
+        .frame(width: 200)
     }
 }
 
 struct CityMonumentsView: View {
-    var cityName: String
-    var monuments: [(image: UIImage, title: String, description: String)]
+    @StateObject private var viewModel = MonumentViewModel()
     
     var body: some View {
-        VStack(alignment: .leading) {
-            // City name at the top
-            Text(cityName)
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding(.top, 12)
-                .frame(maxWidth: .infinity, alignment: .leading) // Left align the text
-            
-            // Horizontal scrollable carousel of monuments
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
-                    ForEach(monuments, id: \.title) { monument in
-                        MonumentView(image: monument.image, title: monument.title, description: monument.description)
-                            .frame(width: 200) // Fixed width for each "card"
-                            .padding(.vertical, 10)
+        NavigationView {
+            ScrollView {
+                if viewModel.isLoading {
+                    ProgressView("Loading...")
+                        .padding()
+                } else if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .padding()
+                } else {
+                    LazyVStack(alignment: .leading, spacing: 16) {
+                        ForEach(viewModel.citiesWithMonuments) { cityWithMonuments in
+                            VStack(alignment: .leading, spacing: 8) {
+                                // Nombre de la ciudad
+                                Text(cityWithMonuments.city.name)
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .padding(.horizontal)
+                                
+                                // Carrusel de monumentos
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 16) {
+                                        ForEach(cityWithMonuments.monuments) { monument in
+                                            MonumentView(monument: monument)
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
+                            }
+                        }
                     }
+                    .padding(.top)
                 }
-                .padding(.horizontal, 16) // Padding around the carousel
             }
-            .frame(height: 220) // Set a fixed height for the carousel
+            .navigationTitle("Cities and Monuments")
+            .onAppear {
+                Task {
+                    await viewModel.fetchCitiesAndMonuments()
+                }
+            }
         }
-        .padding(.horizontal, 16)
     }
 }
 
 #Preview {
-    CityMonumentsView(cityName: "Paris", monuments: [])
+    CityMonumentsView()
 }
