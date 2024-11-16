@@ -87,7 +87,7 @@ struct FlipCard: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 40, height: 40)
-                                    .foregroundColor(Color("mainBlue"))
+                                    .foregroundColor(Color("MainBlue"))
                                     .contentTransition(.symbolEffect(.replace))
                             }
                         }
@@ -115,7 +115,7 @@ struct FlipCard: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 40, height: 40)
-                                    .foregroundColor(Color("mainBlue"))
+                                    .foregroundColor(Color("MainBlue"))
                                 
                             }
                         }
