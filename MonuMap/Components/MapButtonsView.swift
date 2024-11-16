@@ -23,7 +23,7 @@ struct MapButtonsView : View{
                         ZStack{
                             Circle()
                                 .frame(width: 40, height: 40)
-                                .foregroundColor(.white)
+                                .foregroundStyle(Color(UIColor.systemBackground))
                                 .shadow(radius: 10)
                             Image(systemName: "person.circle")
                                 .resizable()
@@ -41,7 +41,7 @@ struct MapButtonsView : View{
                         ZStack{
                             Circle()
                                 .frame(width: 40, height: 40)
-                                .foregroundColor(.white)
+                                .foregroundStyle(Color(UIColor.systemBackground))
                                 .shadow(radius: 10)
                             Image(systemName: "text.badge.plus")
                                 .resizable()
