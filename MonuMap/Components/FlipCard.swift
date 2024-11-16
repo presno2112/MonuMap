@@ -10,7 +10,9 @@ import SwiftUI
 struct FlipCard: View {
     @Binding var showCard: Bool
     @State private var isFlipped: Bool = false
+    @State private var inputImage : UIImage?
     @State var isInfoPressed : Bool = false
+    @State var isDownloaded : Bool = false
     
     var body: some View {
         ZStack{
@@ -65,39 +67,50 @@ struct FlipCard: View {
                     Spacer()
                     VStack{
                         Button{
+                            inputImage = UIImage(named: "Image 1")
+                            
+                            guard let inputImage = inputImage else {
+                                print("Error: Could not load the image.")
+                                return
+                            }
+                            
+                            let imageSaver = ImageSaver()
+                            imageSaver.writeToPhotoAlbum(image: inputImage)
+                            isDownloaded = true
+                        }label: {
+                            ZStack {
+                                Circle()
+                                    .frame(width: 70, height: 70)
+                                    .foregroundStyle(.gray).opacity(0.5)
+                                Image(systemName: !isDownloaded ?  "arrow.down.circle" : "checkmark.circle")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(.white)
+                                    .contentTransition(.symbolEffect(.replace))
+                            }
+                        }
+                        .disabled(isDownloaded)
+                        Text("Download")
+                    }
+                    Spacer()
+                    VStack{
+                        Button{
                             
                         }label: {
                             ZStack {
                                 Circle()
                                     .frame(width: 70, height: 70)
                                     .foregroundStyle(.gray).opacity(0.5)
-                                Image(systemName: "arrow.down.circle")
+                                Image(systemName: "plus.circle.dashed")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 40, height: 40)
                                     .foregroundColor(.white)
                             }
                         }
-                        Text("Download")
-                    }
-                    Spacer()
-                    VStack{
-                    Button{
-                        
-                    }label: {
-                        ZStack {
-                            Circle()
-                                .frame(width: 70, height: 70)
-                                .foregroundStyle(.gray).opacity(0.5)
-                            Image(systemName: "plus.circle.dashed")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.white)
-                        }
-                    }
                         Text("Share")
-                }
+                    }
                     Spacer()
                 }
                 .padding(.bottom, 90)
@@ -105,6 +118,9 @@ struct FlipCard: View {
             .padding(.top, 80)
         }
         .ignoresSafeArea()
+        .onAppear{
+            isDownloaded = false
+        }
     }
 }
 
