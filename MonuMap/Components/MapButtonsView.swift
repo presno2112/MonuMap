@@ -28,7 +28,7 @@ struct MapButtonsView : View{
                             Image(systemName: "person.circle")
                                 .resizable()
                                 .frame(width: 30, height: 30)
-                                .foregroundColor(Color("mainBlue"))
+                                .foregroundColor(Color("MainBlue"))
                         }
                     }
                     .padding(.top, 50)
@@ -46,7 +46,7 @@ struct MapButtonsView : View{
                             Image(systemName: "text.badge.plus")
                                 .resizable()
                                 .frame(width: 20, height: 20)
-                                .foregroundColor(Color("mainBlue"))
+                                .foregroundColor(Color("MainBlue"))
                         }
                     }
                     .padding(.trailing, 16)

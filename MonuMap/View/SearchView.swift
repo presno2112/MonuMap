@@ -44,7 +44,7 @@ struct SearchView: View {
                     } label: {
                         Image(systemName: "camera.circle.fill")
                             .font(.largeTitle)
-                            .foregroundStyle(Color("mainBlue"))
+                            .foregroundStyle(Color("MainBlue"))
                     }
                     .padding()
                 }
