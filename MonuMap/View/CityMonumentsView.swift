@@ -79,6 +79,7 @@ struct CityMonumentsView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 // Nombre de la ciudad
                                 Text(cityWithMonuments.city.name)
+                                    .foregroundStyle(Color("mainBlue"))
                                     .font(.title2)
                                     .fontWeight(.bold)
                                     .padding(.horizontal)
@@ -98,7 +99,6 @@ struct CityMonumentsView: View {
                     .padding(.top)
                 }
             }
-            .navigationTitle("Cities and Monuments")
             .onAppear {
                 Task {
                     await viewModel.fetchCitiesAndMonuments()
