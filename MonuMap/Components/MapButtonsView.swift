@@ -23,10 +23,12 @@ struct MapButtonsView : View{
                         ZStack{
                             Circle()
                                 .frame(width: 40, height: 40)
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .frame(width: 20, height: 20)
                                 .foregroundColor(.white)
+                                .shadow(radius: 10)
+                            Image(systemName: "person.circle")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(Color("mainBlue"))
                         }
                     }
                     .padding(.top, 50)
@@ -39,10 +41,12 @@ struct MapButtonsView : View{
                         ZStack{
                             Circle()
                                 .frame(width: 40, height: 40)
-                            Image(systemName: "heart.text.square.fill")
+                                .foregroundColor(.white)
+                                .shadow(radius: 10)
+                            Image(systemName: "text.badge.plus")
                                 .resizable()
                                 .frame(width: 20, height: 20)
-                                .foregroundColor(.white)
+                                .foregroundColor(Color("mainBlue"))
                         }
                     }
                     .padding(.trailing, 16)

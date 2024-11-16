@@ -35,6 +35,7 @@ struct WishlistView: View {
                             VStack(alignment: .leading, spacing: 10){
                                 Text(city)
                                     .font(.title2)
+                                    .foregroundStyle(Color("mainBlue"))
                                     .bold()
                                     .padding(.horizontal)
                                 ForEach(places[city]!, id: \.self) { place in

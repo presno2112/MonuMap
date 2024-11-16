@@ -1,13 +1,13 @@
 //
-//  FlipCard.swift
-//  MapKitTest
+//  NewBadgeView.swift
+//  MonuMap
 //
-//  Created by Sebastian Presno on 06/11/24.
+//  Created by Sebastian Presno on 16/11/24.
 //
 
 import SwiftUI
 
-struct FlipCard: View {
+struct NewBadgeView: View {
     @Binding var showCard: Bool
     @State private var isFlipped: Bool = false
     @State private var inputImage : UIImage?
@@ -21,21 +21,27 @@ struct FlipCard: View {
                 .blur(radius: 50)
             VStack{
                 Spacer()
+                Text("You unlocked")
+                    .multilineTextAlignment(.center)
+                    .font(.title2)
+                    .bold()
+                    .padding(.horizontal)
+                Text("Pizzeria da michelle!")
+                    .multilineTextAlignment(.center)
+                    .font(.title)
+                    .bold()
+                    .padding(.horizontal)
+
+                Spacer()
                 ZStack {
-                    Image(isFlipped ? "Image 1" : "badge2")
+                    Image(isFlipped ? "Image 1" : "Image 1")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .clipped()
-//                        .shadow(color: .gray, radius: 10)
-                        .rotation3DEffect(.degrees(isFlipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
-                        .animation(.easeInOut(duration: 0.6), value: isFlipped)
-                        .onTapGesture {
-                            isFlipped.toggle()
-                        }
-                        .blur(radius: isInfoPressed ? 70 : 0)
+                        .shadow(color: .gray, radius: 10)
                         .opacity(isInfoPressed ? 0.7 : 1)
-                        .disabled(isInfoPressed)
+                        .blur(radius: isInfoPressed ? 70 : 0)
                     VStack{
                         Spacer()
                         // Button positioned using an overlay
@@ -44,13 +50,13 @@ struct FlipCard: View {
                             Button {
                                 isInfoPressed.toggle()
                             } label: {
-                                Image(systemName: "questionmark.circle.fill")
+                                Image(systemName: "info.circle.fill")
                                     .resizable()
                                     .frame(width: 30, height: 30)
                                     .foregroundColor(.white)
                                     .opacity(0.8)
                             }
-                            .padding(30)
+                            .padding(16)
                         }
                     }
                     Text("This is a very simple description to talk about the colosseum")
@@ -83,6 +89,8 @@ struct FlipCard: View {
                                 Circle()
                                     .frame(width: 70, height: 70)
                                     .foregroundStyle(.white)
+                                    .shadow(radius: 0.5)
+                                
                                 Image(systemName: !isDownloaded ?  "arrow.down.circle" : "checkmark.circle")
                                     .resizable()
                                     .scaledToFit()
@@ -109,8 +117,7 @@ struct FlipCard: View {
                                 Circle()
                                     .foregroundStyle(.white)
                                     .frame(width: 70, height: 70)
-                                .foregroundStyle(.gray).opacity(0.5)
-                                .shadow(radius: 10)
+                                    .shadow(radius: 0.5)
                                 Image(systemName: "plus.circle.dashed")
                                     .resizable()
                                     .scaledToFit()
@@ -123,16 +130,38 @@ struct FlipCard: View {
                     }
                     Spacer()
                 }
-                .padding(.bottom, 120)
+
+                .padding(.bottom, 90)
             }
             .padding(.top, 80)
+            Image(systemName: "sparkles")
+                .foregroundStyle(Color.blue)
+                .frame(width: 20, height: 20)
+                .modifier(ParticlesModifier())
+                .offset(x: -100, y : -50)
+            
+            Image(systemName: "sparkles")
+                .foregroundStyle(Color.red)
+                .frame(width: 20, height: 20)
+                .modifier(ParticlesModifier())
+                .offset(x: 60, y : 70)
+            Image(systemName: "sparkles")
+                .foregroundStyle(Color.blue)
+                .frame(width: 20, height: 20)
+                .modifier(ParticlesModifier())
+                .offset(x: -100, y : -50)
+            
+            Image(systemName: "sparkles")
+                .foregroundStyle(Color.red)
+                .frame(width: 20, height: 20)
+                .modifier(ParticlesModifier())
+                .offset(x: 60, y : 70)
         }
         .ignoresSafeArea()
         .onAppear{
             isDownloaded = false
         }
     }
-    
     func shareImageToInstagramStories(image: UIImage) {
             guard let imageData = image.pngData() else {
                 print("Unable to convert image to PNG data.")
@@ -164,5 +193,5 @@ struct FlipCard: View {
 }
 
 #Preview {
-    FlipCard(showCard: .constant(true))
+    NewBadgeView(showCard: .constant(true))
 }
