@@ -18,9 +18,22 @@
 		F8AA8FDB2CDD073C00C00233 /* MonuMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MonuMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F89E8BAE2CE9102A0059205F /* Exceptions for "MonuMap" folder in "MonuMap" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F8AA8FDA2CDD073C00C00233 /* MonuMap */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F8AA8FDD2CDD073C00C00233 /* MonuMap */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F89E8BAE2CE9102A0059205F /* Exceptions for "MonuMap" folder in "MonuMap" target */,
+			);
 			path = MonuMap;
 			sourceTree = "<group>";
 		};
@@ -273,10 +286,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MonuMap/Preview Content\"";
-				DEVELOPMENT_TEAM = 885YM3RRXJ;
+				DEVELOPMENT_TEAM = 7MLM8NTU75;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MonuMap/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "MonuMap needs your location to help you find spots around the city";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "MonuMap needs access to help you download your badges";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -303,10 +318,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MonuMap/Preview Content\"";
-				DEVELOPMENT_TEAM = 885YM3RRXJ;
+				DEVELOPMENT_TEAM = 7MLM8NTU75;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MonuMap/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "MonuMap needs your location to help you find spots around the city";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "MonuMap needs access to help you download your badges";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -169,9 +169,11 @@ struct MapView: View {
                                         cameraPosition = .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
                                     }
                                 }) {
-                                    Circle()
-                                        .frame(width: 20, height: 20)
-                                        .foregroundColor(.blue)
+                                    Image("pin")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 40, height: 40)
+//                                        .foregroundColor(.blue)
                                 }
                             }
                         }
@@ -225,14 +227,10 @@ struct MapView: View {
                           .navigationDestination(
                 isPresented: $navigateToWishlist) {
                     WishlistView()
-                    EmptyView()
-                        .hidden()
                 }
                 .navigationDestination(
                     isPresented: $navigateToProfile) {
                         UserProfileView()
-                        EmptyView()
-                            .hidden()
                     }
 
             // Mostrar ResultView sobre la vista principal

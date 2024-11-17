@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 
 struct Monument: Identifiable, Codable {
-    var id: String?
+    var id: String? = UUID().uuidString 
     var name: String
     var creator: String?
     var description: String?

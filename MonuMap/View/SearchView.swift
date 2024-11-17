@@ -70,7 +70,9 @@ struct SearchView: View {
                             }
                         }
                     } label: {
-                        Text("Log Out")
+                        Image(systemName: "camera.circle.fill")
+                            .font(.largeTitle)
+                            .foregroundStyle(Color("MainBlue"))
                     }
 
                     Spacer()

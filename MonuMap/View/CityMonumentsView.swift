@@ -75,6 +75,7 @@ struct CityMonumentsView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 // Nombre de la ciudad
                                 Text(cityWithMonuments.city.name)
+                                    .foregroundStyle(Color("MainBlue"))
                                     .font(.title2)
                                     .fontWeight(.bold)
                                     .padding(.horizontal)
