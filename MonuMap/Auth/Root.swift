@@ -10,6 +10,7 @@ import SwiftUI
 struct Root: View {
     
     @State private var showSignIn: Bool = false
+    //@StateObject private var authViewModel = AuthViewModel()
     
     var body: some View {
         if(!showSignIn){

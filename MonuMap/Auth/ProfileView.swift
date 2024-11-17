@@ -8,42 +8,43 @@
 import SwiftUI
 
 @MainActor
+//final class ProfileViewModel: ObservableObject {
+//    
+//    @Published private(set) var user: DBUser? = nil
+//    
+//    func loadCurrentUser() async throws {
+//        let authDataResult = try AuthenticationManager.shared.getAuthenticadedUser()
+//        self.user = try await UserManager.shared.getUser(userId: authDataResult.uid)
+//    }
+//}
+
 final class ProfileViewModel: ObservableObject {
-    
     @Published private(set) var user: DBUser? = nil
-    
+
     func loadCurrentUser() async throws {
-        let authDataResult = try AuthenticationManager.shared.getAuthenticadedUser()
-        self.user = try await UserManager.shared.getUser(userId: authDataResult.uid)
+        self.user = try await UserManager.shared.getCurrentUser()
     }
 }
 
 struct ProfileView: View {
-    
-    @StateObject private var profileViewModel = ProfileViewModel()
-    @Binding var showSignInView: Bool
+    @StateObject private var userViewModel = UserViewModel()
     
     var body: some View {
-        List{
-            if let user = profileViewModel.user {
-                Text("UserId: \(user.userId) ")
-            }
-        }
-        .task{
-            try? await profileViewModel.loadCurrentUser()
-        }
-        .toolbar{
-            ToolbarItem(placement: .navigationBarTrailing){
-                NavigationLink{
-                    SettingsView(showSignInView: $showSignInView)
-                }label:{
-                    Text("Settings")
+        VStack {
+            if let monuments = userViewModel.user?.monuments, !monuments.isEmpty {
+                List(monuments, id: \.self) { monument in
+                    Text(monument)
                 }
+            } else {
+                Text("No monuments found.")
             }
+        }
+        .task {
+            try? await userViewModel.loadCurrentUser()
         }
     }
 }
 
 #Preview {
-    ProfileView(showSignInView: .constant(false))
+    ProfileView()
 }
