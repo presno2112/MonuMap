@@ -12,14 +12,16 @@ final class SignInViewModel: ObservableObject {
     
     @Published var email = ""
     @Published var password = ""
+    @Published var name = ""
     
-    func SignUp() async throws {
-        guard !email.isEmpty, !password.isEmpty else{
+    func SignUp(name: String) async throws {
+        guard !email.isEmpty, !password.isEmpty else {
             print("No email or password found")
             return
         }
+        
         let authDataResult = try await AuthenticationManager.shared.createUser(email: email, password: password)
-        let user = DBUser(auth: authDataResult)
+        let user = DBUser(auth: authDataResult, name: name, badges: [], monuments: [])
         try await UserManager.shared.createNewUser(user: user)
     }
     
@@ -35,7 +37,7 @@ final class SignInViewModel: ObservableObject {
 struct SignInView: View {
     
     @StateObject var signInViewModel = SignInViewModel()
-    @Binding var showSignIn: Bool
+    //@Binding var showSignIn: Bool
     
     var body: some View {
         VStack{
@@ -51,15 +53,15 @@ struct SignInView: View {
                 //signInViewModel.SignIn()
                 Task{
                     do{
-                        try await signInViewModel.SignUp()
-                        showSignIn = false
+                        try await signInViewModel.SignUp(name: "name")
+                        //showSignIn = false
                         return
                     }catch {
                         print(error)
                     }
                     do{
-                        try await signInViewModel.SignUp()
-                        showSignIn = false
+                        try await signInViewModel.SignUp(name: "name")
+                        //showSignIn = false
                         return
                     }catch {
                         print(error)
@@ -83,6 +85,7 @@ struct SignInView: View {
 
 #Preview {
     NavigationStack{
-        SignInView(showSignIn: .constant(false))
+        SignInView()
+//        SignInView(showSignIn: .constant(false))
     }
 }

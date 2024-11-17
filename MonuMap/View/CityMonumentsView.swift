@@ -10,22 +10,18 @@ import SwiftUI
 struct MonumentView: View {
     let monument: Monument
     
-    @State private var isHeartFilled = false // State to track heart status
+    @State private var isHeartFilled = false // Estado para seguir el estado del corazón
     
     var body: some View {
         VStack(spacing: 8) {
             ZStack(alignment: .topTrailing) {
                 // Imagen del monumento
-                AsyncImage(url: URL(string: monument.picture)) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                } placeholder: {
-                    Color.gray.opacity(0.3)
-                }
-                .frame(width: 200, height: 120)
-                .clipped()
-                .cornerRadius(8)
+                Image(monument.name)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 120)
+                    .clipped()
+                    .cornerRadius(8)
 
                 // Botón de favorito
                 Button(action: {
@@ -48,11 +44,11 @@ struct MonumentView: View {
                     .fontWeight(.bold)
                     .lineLimit(1)
                 
-                Text(monument.description)
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
+//                Text(monument.description)
+//                    .font(.caption)
+//                    .foregroundColor(.gray)
+//                    .lineLimit(2)
+//                    .multilineTextAlignment(.leading)
             }
             .padding(.horizontal, 8)
         }
@@ -75,14 +71,13 @@ struct CityMonumentsView: View {
                         .padding()
                 } else {
                     LazyVStack(alignment: .leading, spacing: 16) {
-                        ForEach(viewModel.citiesWithMonuments) { cityWithMonuments in
+                        ForEach(viewModel.citiesWithMonuments, id: \.city.id) { cityWithMonuments in
                             VStack(alignment: .leading, spacing: 8) {
                                 // Nombre de la ciudad
                                 Text(cityWithMonuments.city.name)
                                     .font(.title2)
                                     .fontWeight(.bold)
                                     .padding(.horizontal)
-                                
                                 // Carrusel de monumentos
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack(spacing: 16) {
@@ -98,7 +93,6 @@ struct CityMonumentsView: View {
                     .padding(.top)
                 }
             }
-            .navigationTitle("Cities and Monuments")
             .onAppear {
                 Task {
                     await viewModel.fetchCitiesAndMonuments()

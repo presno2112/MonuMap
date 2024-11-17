@@ -34,6 +34,13 @@ final class AuthenticationManager {
         
     }
     
+//    func getAuthenticadedUser() async throws -> AuthDataResultModel? {
+//            guard let user = Auth.auth().currentUser else {
+//                return nil // Si no hay usuario autenticado, devolvemos nil
+//            }
+//            return AuthDataResultModel(user: user)
+//        }
+    
     @discardableResult
     func createUser(email: String, password: String) async throws -> AuthDataResultModel {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)

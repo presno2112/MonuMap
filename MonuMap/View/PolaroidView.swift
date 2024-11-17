@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct PolaroidView: View {
-    var image: UIImage = UIImage(named: "black_test")!
+    //var image: UIImage = UIImage(named: "black_test")!
     var title: String = "Monument"
     var description: String = "Monument Description"
     
     var body: some View {
         VStack(alignment: .leading) {
-            Image(uiImage: image)
+            Image("coliseo")
                 .resizable()
                 .scaledToFill()
                 .frame(width: 180, height: 180)
@@ -43,3 +43,4 @@ struct PolaroidView: View {
 #Preview {
     PolaroidView()
 }
+

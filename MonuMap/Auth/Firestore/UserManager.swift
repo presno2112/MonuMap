@@ -12,21 +12,17 @@ struct DBUser: Codable {
     let userId: String
     let email: String?
     let photoUrl: String?
-    let username: String?
     let name: String?
-    let lastName: String?
-    let badges: [Badge]?
-    let monuments: [Monument]?
+    let badges: [String]
+    let monuments: [String]
     
-    init(auth: AuthDataResultModel){
+    init(auth: AuthDataResultModel, name: String? = nil, badges: [String] = [], monuments: [String] = []) {
         self.userId = auth.uid
         self.email = auth.email
         self.photoUrl = auth.photoURL
-        self.username = ""
-        self.name = ""
-        self.lastName = ""
-        self.badges = nil
-        self.monuments = nil
+        self.name = name
+        self.badges = badges
+        self.monuments = monuments
     }
 }
 
@@ -59,32 +55,12 @@ final class UserManager{
         try userDocument(userId: user.userId).setData(from: user, merge: false, encoder: encoder)
     }
     
-//    func createNewUser(auth: AuthDataResultModel) async throws{
-//        var userData: [String: Any] = [
-//            "user_id" : auth.uid,
-//            "email" : auth.email ?? ""
-//        ]
-//        if let photoUrl = auth.photoURL{
-//            userData["photo_url"] = photoUrl
-//        }
-//        
-//        try await userDocument(userId: auth.uid).setData(userData, merge: false)
-//    }
-    
     func getUser(userId: String) async throws -> DBUser {
         try await userDocument(userId: userId).getDocument(as: DBUser.self, decoder: decoder)
     }
     
-//    func getUser(userId: String) async throws -> DBUser {
-//        let snapshot = try await userDocument(userId: userId).getDocument()
-//        
-//        guard let data = snapshot.data() else{
-//            throw URLError(.badServerResponse)
-//        }
-//        
-//        let email = data["email"] as? String
-//        let photoUrl = data["photo_url"] as? String
-//        
-//        return DBUser(userId: userId, email: email, photoUrl: photoUrl)
-//    }
+    func getCurrentUser() async throws -> DBUser {
+        let authDataResult = try AuthenticationManager.shared.getAuthenticadedUser()
+        return try await getUser(userId: authDataResult.uid)
+    }
 }

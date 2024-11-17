@@ -10,8 +10,7 @@ import MapKit
 import FirebaseFirestore
 
 struct MapView: View {
-    
-    // Sample monuments data
+
     let monuments = [
         Monument(
             name: "Roman Colosseum",
@@ -106,7 +105,7 @@ struct MapView: View {
         Monument(
             name: "Pulcinella Statue",
             creator: nil,
-//            date: Date(),
+    //            date: Date(),
             description: "Statue of Pulcinella.",
             picture: "https://example.com/pulcinella.jpg",
             location: "Naples",
@@ -115,7 +114,7 @@ struct MapView: View {
         Monument(
             name: "Pizzeria Da Michele",
             creator: nil,
-//            date: Date(),
+    //            date: Date(),
             description: "Historic pizzeria in Naples.",
             picture: "https://example.com/damichele.jpg",
             location: "Naples",
@@ -124,7 +123,7 @@ struct MapView: View {
         Monument(
             name: "Cupertino",
             creator: nil,
-//            date: Date(),
+    //            date: Date(),
             description: "Test location",
             picture: "https://example.com/damichele.jpg",
             location: "San Francisco",
@@ -136,10 +135,16 @@ struct MapView: View {
     @State private var isSheetPresented: Bool = true
     @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     
-    // State to manage pop-up visibility and selected monument details
+    // Estado para manejar el resultado y visibilidad de ResultView
+    @State private var isResultPresented: Bool = false
+    @State private var detectionResult: String? = nil
+    @State private var selectedImage: UIImage? = nil
+    
+    // Estado para el popup de monumentos (se mantiene)
     @State private var selectedMonument: Monument? = nil
     @State private var isPopupVisible: Bool = false
-    
+    @State var showImagePicker: Bool = false
+
     var body: some View {
         ZStack {
             VStack {
@@ -149,12 +154,14 @@ struct MapView: View {
                         let coordinate = monument.coordinates.toCLLocationCoordinate2D()
                         Annotation(monument.name, coordinate: coordinate) {
                             Button(action: {
-                                // Show pop-up and set selected monument
                                 selectedMonument = monument
                                 isPopupVisible = true
-                                
-                                // Update camera position to focus on the tapped marker
-                                cameraPosition = .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+                                cameraPosition = .region(
+                                    MKCoordinateRegion(
+                                        center: coordinate,
+                                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                                    )
+                                )
                             }) {
                                 Circle()
                                     .frame(width: 20, height: 20)
@@ -163,7 +170,7 @@ struct MapView: View {
                         }
                     }
                 }
-                .disabled(isPopupVisible) // Disable map interaction when popup is visible
+                .disabled(isPopupVisible)
                 .edgesIgnoringSafeArea(.top)
                 .frame(maxHeight: .infinity)
                 .onAppear {
@@ -171,40 +178,42 @@ struct MapView: View {
                 }
             }
             .sheet(isPresented: $isSheetPresented) {
-                SearchView(isSheetPresented: $isSheetPresented)
+                SearchView(isSheetPresented: $isSheetPresented, selectedImage: $selectedImage, detectionResult: $detectionResult, isResultPresented: $isResultPresented, showImagePicker: $showImagePicker)
                     .presentationDetents([.height(40), .medium, .large])
                     .presentationBackgroundInteraction(.enabled)
                     .interactiveDismissDisabled()
             }
-            
-            // Display PlacePopupView when a monument is selected
+
+            // Mostrar ResultView sobre la vista principal
+            if isResultPresented, let image = selectedImage, let result = detectionResult {
+                ResultView(image: image, result: result, isPresented: $isResultPresented, isSheetPresented: $isSheetPresented, showImagePicker: $showImagePicker)
+                    .frame(width: 300, height: 450)
+                    .cornerRadius(12)
+                    .shadow(radius: 10)
+                    .zIndex(2)
+            }
+
+            // Mostrar popup de monumentos
             if isPopupVisible, let monument = selectedMonument {
                 MonumentDetail(
                     isPresented: $isPopupVisible,
                     placeName: monument.name,
                     onGetBadge: {
                         print("Get Badge tapped for \(monument.name)")
-                        isPopupVisible = false // Hide popup if needed
+                        isPopupVisible = false
                     },
                     onAddToWishlist: {
                         print("Add to Wishlist tapped for \(monument.name)")
-                        isPopupVisible = false // Hide popup if needed
+                        isPopupVisible = false
                     }
                 )
                 .transition(.move(edge: .bottom))
                 .animation(.spring())
-                .frame(width: 180) // Adjust the width as needed
+                .frame(width: 180)
                 .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 3)
-                .transition(.scale) // Smooth transition
+                .transition(.scale)
             }
         }
-        .sheet(isPresented: $isSheetPresented) {
-            SearchView(isSheetPresented: $isSheetPresented)
-                .presentationDetents([.height(40), .medium, .large])
-                .presentationBackgroundInteraction(.enabled)
-                .interactiveDismissDisabled() // makes sure the sheet cant be dismissed
-        }
-            
     }
 }
 
