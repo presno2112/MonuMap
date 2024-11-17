@@ -143,46 +143,97 @@ struct MapView: View {
     // Estado para el popup de monumentos (se mantiene)
     @State private var selectedMonument: Monument? = nil
     @State private var isPopupVisible: Bool = false
-    @State var showImagePicker: Bool = false
 
+    @State var showImagePicker: Bool = false
+    //State vars to manage navigating to profile or wishlist
+    @State private var navigateToProfile = false
+    @State private var navigateToWishlist = false
+    
     var body: some View {
-        ZStack {
-            VStack {
-                Map(position: $cameraPosition) {
-                    UserAnnotation()
-                    ForEach(monuments, id: \.id) { monument in
-                        let coordinate = monument.coordinates.toCLLocationCoordinate2D()
-                        Annotation(monument.name, coordinate: coordinate) {
-                            Button(action: {
-                                selectedMonument = monument
-                                isPopupVisible = true
-                                cameraPosition = .region(
-                                    MKCoordinateRegion(
-                                        center: coordinate,
-                                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                                    )
-                                )
-                            }) {
-                                Circle()
-                                    .frame(width: 20, height: 20)
-                                    .foregroundColor(.blue)
+        NavigationStack {
+            ZStack {
+                VStack {
+                    Map(position: $cameraPosition) {
+                        UserAnnotation()
+                        ForEach(monuments, id: \.id) { monument in
+                            let coordinate = monument.coordinates.toCLLocationCoordinate2D()
+                            Annotation(monument.name, coordinate: coordinate) {
+                                Button(action: {
+                                    // Show pop-up and set selected monument
+                                    selectedMonument = monument
+                                    isSheetPresented = false
+                                    isPopupVisible = true
+                                    
+                                    // Update camera position to focus on the tapped marker
+                                    withAnimation(.easeInOut(duration: 1.0)) {
+                                        cameraPosition = .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+                                    }
+                                }) {
+                                    Circle()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(.blue)
+                                }
                             }
                         }
                     }
+                    .disabled(isPopupVisible) // Disable map interaction when popup is visible
+                    .edgesIgnoringSafeArea(.top)
+                    .frame(maxHeight: .infinity)
+                    .onAppear {
+                        viewModel.checkIfLocationIsEnabled()
+                        isSheetPresented = true
+                    }
+                }
+                
+                // Display PlacePopupView when a monument is selected
+                if isPopupVisible, let monument = selectedMonument {
+                    MonumentDetail(
+                        isSheetPresented: $isSheetPresented,
+                        isPresented: $isPopupVisible,
+                        placeName: monument.name,
+                        onGetBadge: {
+                            print("Get Badge tapped for \(monument.name)")
+                            isPopupVisible = false // Hide popup if needed
+                        },
+                        onAddToWishlist: {
+                            print("Add to Wishlist tapped for \(monument.name)")
+                            isPopupVisible = false // Hide popup if needed
+                        }
+                    )
+                    .transition(.move(edge: .bottom))
+                    .animation(.spring())
+                    .frame(width: 180) // Adjust the width as needed
+                    .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 4)
+                    .transition(.scale) // Smooth transition
                 }
                 .disabled(isPopupVisible)
                 .edgesIgnoringSafeArea(.top)
                 .frame(maxHeight: .infinity)
                 .onAppear {
                     viewModel.checkIfLocationIsEnabled()
+                else{
+                    MapButtonsView(navigateToProfile: $navigateToProfile, navigateToWishlist: $navigateToWishlist, isSheetPresented: $isSheetPresented)
                 }
             }
+            .navigationBarHidden(true)
             .sheet(isPresented: $isSheetPresented) {
                 SearchView(isSheetPresented: $isSheetPresented, selectedImage: $selectedImage, detectionResult: $detectionResult, isResultPresented: $isResultPresented, showImagePicker: $showImagePicker)
                     .presentationDetents([.height(40), .medium, .large])
                     .presentationBackgroundInteraction(.enabled)
-                    .interactiveDismissDisabled()
+                    .interactiveDismissDisabled() // makes sure the sheet cant be dismissed
             }
+                          .navigationDestination(
+                isPresented: $navigateToWishlist) {
+                    WishlistView()
+                    EmptyView()
+                        .hidden()
+                }
+                .navigationDestination(
+                    isPresented: $navigateToProfile) {
+                        UserProfileView()
+                        EmptyView()
+                            .hidden()
+                    }
 
             // Mostrar ResultView sobre la vista principal
             if isResultPresented, let image = selectedImage, let result = detectionResult {
@@ -224,10 +275,10 @@ struct ContentView_Previews: PreviewProvider {
         MapView()
     }
 }
-    
-    
-    extension GeoPoint {
-        func toCLLocationCoordinate2D() -> CLLocationCoordinate2D {
-            return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
-        }
+
+
+extension GeoPoint {
+    func toCLLocationCoordinate2D() -> CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
     }
+}

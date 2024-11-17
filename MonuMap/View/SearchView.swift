@@ -91,6 +91,17 @@ struct SearchView: View {
                         detectionResult = classifierInstance.results
                         isResultPresented = true // Activa la presentación de ResultView en MapView
                         isSheetPresented = false // Cierra el sheet de búsqueda
+                    else {
+                        CityMonumentsView()
+//                        CityMonumentsView(cityName: "Napoli")
+//                        CityMonumentsView(cityName: "Roma", monuments: filteredMonuments)
+//                        CityMonumentsView(cityName: "Napoli", monuments: filteredMonuments)
+                    }
+                    if let selectedImage = selectedImage {
+                        Image(uiImage: selectedImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 300, height: 300)
                     }
                 }
             }

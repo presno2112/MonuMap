@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MonumentDetail: View {
+    @Binding var isSheetPresented : Bool
     @Binding var isPresented: Bool
     let placeName: String
     var onGetBadge: () -> Void
@@ -20,6 +21,7 @@ struct MonumentDetail: View {
                 HStack {
                     Button {
                         isPresented = false
+                        isSheetPresented = true
                     } label: {
                         Image(systemName: "chevron.backward")
                             .foregroundStyle(.white)
@@ -101,7 +103,7 @@ struct Triangle: Shape {
 
 #Preview {
     MonumentDetail(
-        isPresented: .constant(true),
+        isSheetPresented: .constant(false), isPresented: .constant(true),
         placeName: "Coliseo",
         onGetBadge: {
             print("Get Badge tapped")
