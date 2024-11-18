@@ -13,12 +13,13 @@ struct ResultView: View {
     @Binding var isPresented: Bool // Controlará la presentación de la vista
     @Binding var isSheetPresented: Bool
     @Binding var showImagePicker: Bool
+    @Binding var showBadge: Bool
     
     var body: some View {
         ZStack {
             Rectangle()
                 .frame(width: 300, height: 450)
-                .foregroundStyle(.gray)
+                .foregroundStyle(Color("backgroundCard"))
             VStack(spacing: 20) {
                 
                 Text(result)
@@ -31,6 +32,7 @@ struct ResultView: View {
                     Rectangle()
                         .foregroundStyle(.white, .opacity(0.5))
                         .frame(width: 200, height: 240)
+                        .shadow(radius: 0.5)
                     
                     Image(uiImage: image)
                         .resizable()
@@ -54,25 +56,30 @@ struct ResultView: View {
                         isSheetPresented = true
                     } label: {
                         Text("Retake")
+                            .bold()
                             .foregroundColor(.white)
-                            .frame(width: 100, height: 30)
-                            .background(Color.blue)
+                            .frame(width: 120, height: 35)
+                            .background(Color("MainBlue"))
                             .cornerRadius(10)
-                            .padding(.horizontal)
+//                            .padding(.horizontal)
                     }
                     
                     Button {
                         isPresented = false
                         isSheetPresented = true
+                        showBadge = true
+                        
                     } label: {
                         Text("Confirm")
+                            .bold()
                             .foregroundColor(.white)
-                            .frame(width: 100, height: 30)
-                            .background(.blue)
+                            .frame(width: 120, height: 35)
+                            .background(Color("MainBlue"))
                             .cornerRadius(10)
-                            .padding(.horizontal)
+//                            .padding(.horizontal)
                     }
                 }
+                .padding(.horizontal)
             }
         }
         
@@ -80,5 +87,5 @@ struct ResultView: View {
 }
 
 //#Preview {
-//    ResultView(image: "coliseo", result: "coliseo", isPresented: .constant(true))
+//    ResultView(image: "coliseo", result: "coliseo", isPresented: .constant(true), isSheetPresented: .constant(false), showImagePicker: .constant(false), showBadge: .constant(false))
 //}

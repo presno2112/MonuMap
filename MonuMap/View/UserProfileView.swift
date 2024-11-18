@@ -9,7 +9,8 @@ import SwiftUI
 
 struct UserProfileView: View {
     @State var showCard: Bool = false
-    var rectangles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    var rectangles = [1, 2, 3, 4]
+    var images  = ["badge3", "badge4", "badge2", "badge1"]
     
     let columns = [
         GridItem(.flexible()),
@@ -31,13 +32,13 @@ struct UserProfileView: View {
                         .foregroundStyle(Color("MainBlue"))
                     
                     LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(rectangles, id: \.self) { index in
+                        ForEach(images, id: \.self) { image in
                             Button{
                                 withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
                                     showCard.toggle()
                                 }
                             }label: {
-                                    BadgeView()
+                                BadgeView(image: image)
                                 }
                         }
                     }
@@ -54,9 +55,11 @@ struct UserProfileView: View {
 }
 
 struct BadgeView: View {
+    var image : String = ""
     var body: some View {
-        Rectangle()
-            .foregroundColor(.gray)
+        Image(image)
+            .resizable()
+            .scaledToFit()
             .frame(width: 100, height: 150)
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .shadow(radius: 2)
@@ -77,11 +80,11 @@ struct UserInfo: View {
                     .fill(Color("MainBlue"))
                     .frame(width: 140, height: 140)
                 
-                Text("Name Last Name")
+                Text("Hector Daniel Valdes")
                     .font(.title2)
                     .fontWeight(.bold)
                 
-                Text("Description Description Description Description\nDescription Description")
+                Text("Apple developer academy student")
                     .font(.footnote)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.gray)

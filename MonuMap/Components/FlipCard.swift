@@ -68,7 +68,7 @@ struct FlipCard: View {
                     Spacer()
                     VStack{
                         Button{
-                            inputImage = UIImage(named: "Image 1")
+                            inputImage = UIImage(named: "badge2")
                             
                             guard let inputImage = inputImage else {
                                 print("Error: Could not load the image.")
@@ -98,7 +98,7 @@ struct FlipCard: View {
                     Spacer()
                     VStack{
                         Button{
-                            inputImage = UIImage(named: "Image 1")
+                            inputImage = UIImage(named: "badge2")
                             
                             guard let inputImage = inputImage else {
                                 print("Error: Could not load the image.")

@@ -22,7 +22,8 @@ struct Root: View {
                 }
         }
         else{
-            LogInView(showSignIn: $showSignIn)
+//            LogInView(showSignIn: $showSignIn)
+            LogInView()
         }
     }
 }

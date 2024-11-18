@@ -290,6 +290,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MonuMap/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Monumap needs access to your camera ";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "MonuMap needs your location to help you find spots around the city";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "MonuMap needs access to help you download your badges";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -322,6 +323,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MonuMap/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Monumap needs access to your camera ";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "MonuMap needs your location to help you find spots around the city";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "MonuMap needs access to help you download your badges";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

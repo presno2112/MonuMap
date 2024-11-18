@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct NewBadgeView: View {
-    @Binding var showCard: Bool
     @State private var isFlipped: Bool = false
     @State private var inputImage : UIImage?
     @State var isInfoPressed : Bool = false
     @State var isDownloaded : Bool = false
+    @Binding var showBadge: Bool
     
     var body: some View {
         ZStack{
@@ -26,7 +26,7 @@ struct NewBadgeView: View {
                     .font(.title2)
                     .bold()
                     .padding(.horizontal)
-                Text("Pizzeria da michelle!")
+                Text("Roman Colosseum!")
                     .multilineTextAlignment(.center)
                     .font(.title)
                     .bold()
@@ -34,12 +34,11 @@ struct NewBadgeView: View {
 
                 Spacer()
                 ZStack {
-                    Image(isFlipped ? "Image 1" : "Image 1")
+                    Image(isFlipped ? "badge3" : "badge3")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .clipped()
-                        .shadow(color: .gray, radius: 10)
                         .opacity(isInfoPressed ? 0.7 : 1)
                         .blur(radius: isInfoPressed ? 70 : 0)
                     VStack{
@@ -74,7 +73,7 @@ struct NewBadgeView: View {
                     Spacer()
                     VStack{
                         Button{
-                            inputImage = UIImage(named: "Image 1")
+                            inputImage = UIImage(named: "badge2")
                             
                             guard let inputImage = inputImage else {
                                 print("Error: Could not load the image.")
@@ -84,6 +83,7 @@ struct NewBadgeView: View {
                             let imageSaver = ImageSaver()
                             imageSaver.writeToPhotoAlbum(image: inputImage)
                             isDownloaded = true
+                            print("isDownloaded set to: \(isDownloaded)") // Debugging print
                         }label: {
                             ZStack {
                                 Circle()
@@ -105,7 +105,7 @@ struct NewBadgeView: View {
                     Spacer()
                     VStack{
                         Button{
-                            inputImage = UIImage(named: "Image 1")
+                            inputImage = UIImage(named: "badge2")
                             
                             guard let inputImage = inputImage else {
                                 print("Error: Could not load the image.")
@@ -134,6 +134,23 @@ struct NewBadgeView: View {
                 .padding(.bottom, 90)
             }
             .padding(.top, 80)
+            VStack() {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        showBadge = false
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(.white)
+                            .shadow(radius: 2)
+                    }
+                    .padding(.vertical, 70)
+                    .padding(.horizontal, 50)
+                }
+                Spacer()
+            }
             Image(systemName: "sparkles")
                 .foregroundStyle(Color.blue)
                 .frame(width: 20, height: 20)
@@ -193,5 +210,5 @@ struct NewBadgeView: View {
 }
 
 #Preview {
-    NewBadgeView(showCard: .constant(true))
+    NewBadgeView(showBadge: .constant(false))
 }
