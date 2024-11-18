@@ -1,28 +1,13 @@
 //
-//  ContentView.swift
+//  ContentViewModel.swift
 //  MonuMap
 //
-//  Created by Sebastian Presno on 07/11/24.
+//  Created by Sebastian Presno on 09/11/24.
 //
 
-import SwiftUI
+import Foundation
 import MapKit
-
-struct ContentView: View {
-    
-    @StateObject var viewModel = ContentViewModel()
-    
-    var body: some View {
-        VStack {
-            Map(coordinateRegion: viewModel.binding,showsUserLocation: true,userTrackingMode: .constant(.follow))
-                .edgesIgnoringSafeArea(.all)
-                .onAppear(perform: {
-                    viewModel.checkIfLocationIsEnabled()
-                })
-            
-        }
-    }
-}
+import SwiftUI
 
 
 final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
@@ -76,12 +61,5 @@ final class ContentViewModel: NSObject, ObservableObject, CLLocationManagerDeleg
         default:
             break
         }
-    }
-}
-
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }
