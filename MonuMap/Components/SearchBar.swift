@@ -11,7 +11,7 @@ struct SearchBar: View {
     @Binding var searchText: String
     var body: some View {
         HStack {
-            Image(systemName: "magnifyingglass").foregroundColor(.secondary)
+            Image(systemName: "magnifyingglass")
             TextField("Search", text: $searchText)
             if searchText != "" {
                 Image(systemName: "xmark.circle.fill")

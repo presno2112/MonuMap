@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct UserProfileView: View {
-    var rectangles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    @State var showCard: Bool = false
+    var rectangles = [1, 2, 3, 4]
+    var images  = ["badge3", "badge4", "badge2", "badge1"]
     
     let columns = [
         GridItem(.flexible()),
@@ -27,23 +29,37 @@ struct UserProfileView: View {
                         .font(.title3)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(EdgeInsets(top: 30, leading: 30, bottom: -10, trailing: 0))
+                        .foregroundStyle(Color("MainBlue"))
                     
                     LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(rectangles, id: \.self) { index in
-                            BadgeView()
+                        ForEach(images, id: \.self) { image in
+                            Button{
+                                withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                                    showCard.toggle()
+                                }
+                            }label: {
+                                BadgeView(image: image)
+                                }
                         }
                     }
                     .padding()
                 }
             }
         }
+        .sheet(isPresented: $showCard) {
+            FlipCard(showCard: $showCard)
+                .transition(.scale(scale: 0.1, anchor: .center)) // Scale transition for pop effect
+                .animation(.spring(response: 0.5, dampingFraction: 0.7))
+        }
     }
 }
 
 struct BadgeView: View {
+    var image : String = ""
     var body: some View {
-        Rectangle()
-            .foregroundColor(.gray)
+        Image(image)
+            .resizable()
+            .scaledToFit()
             .frame(width: 100, height: 150)
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .shadow(radius: 2)
@@ -55,20 +71,20 @@ struct UserInfo: View {
         ZStack {
             // Background rectangle with rounded corners
             RoundedRectangle(cornerRadius: 20)
-                .fill(Color.gray.opacity(0.1))
+                .fill(Color("MainBlue").opacity(0.4))
                 .frame(width: 320, height: 170)
                 .padding(.top, 70)
             
             VStack(spacing: 10) {
                 Circle()
-                    .fill(.gray)
+                    .fill(Color("MainBlue"))
                     .frame(width: 140, height: 140)
                 
-                Text("Name Last Name")
+                Text("Hector Daniel Valdes")
                     .font(.title2)
                     .fontWeight(.bold)
                 
-                Text("Description Description Description Description\nDescription Description")
+                Text("Apple developer academy student")
                     .font(.footnote)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.gray)

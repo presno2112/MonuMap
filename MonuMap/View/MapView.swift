@@ -11,7 +11,6 @@ import FirebaseFirestore
 
 struct MapView: View {
     
-    // Sample monuments data
     let monuments = [
         Monument(
             name: "Roman Colosseum",
@@ -106,7 +105,7 @@ struct MapView: View {
         Monument(
             name: "Pulcinella Statue",
             creator: nil,
-//            date: Date(),
+            //            date: Date(),
             description: "Statue of Pulcinella.",
             picture: "https://example.com/pulcinella.jpg",
             location: "Naples",
@@ -115,7 +114,7 @@ struct MapView: View {
         Monument(
             name: "Pizzeria Da Michele",
             creator: nil,
-//            date: Date(),
+            //            date: Date(),
             description: "Historic pizzeria in Naples.",
             picture: "https://example.com/damichele.jpg",
             location: "Naples",
@@ -124,7 +123,7 @@ struct MapView: View {
         Monument(
             name: "Cupertino",
             creator: nil,
-//            date: Date(),
+            //            date: Date(),
             description: "Test location",
             picture: "https://example.com/damichele.jpg",
             location: "San Francisco",
@@ -136,94 +135,135 @@ struct MapView: View {
     @State private var isSheetPresented: Bool = true
     @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     
-    // State to manage pop-up visibility and selected monument details
+    // Estado para manejar el resultado y visibilidad de ResultView
+    @State private var isResultPresented: Bool = false
+    @State private var detectionResult: String? = nil
+    @State private var selectedImage: UIImage? = nil
+    
+    // Estado para el popup de monumentos (se mantiene)
     @State private var selectedMonument: Monument? = nil
     @State private var isPopupVisible: Bool = false
     
+    @State var showImagePicker: Bool = false
     //State vars to manage navigating to profile or wishlist
     @State private var navigateToProfile = false
     @State private var navigateToWishlist = false
+    @State private var showbadge: Bool = false
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                VStack {
-                    Map(position: $cameraPosition) {
-                        UserAnnotation()
-                        ForEach(monuments, id: \.id) { monument in
-                            let coordinate = monument.coordinates.toCLLocationCoordinate2D()
-                            Annotation(monument.name, coordinate: coordinate) {
-                                Button(action: {
-                                    // Show pop-up and set selected monument
-                                    selectedMonument = monument
-                                    isSheetPresented = false
-                                    isPopupVisible = true
-                                    
-                                    // Update camera position to focus on the tapped marker
-                                    withAnimation(.easeInOut(duration: 1.0)) {
-                                        cameraPosition = .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+            if (!showbadge){
+                ZStack {
+                    VStack {
+                        Map(position: $cameraPosition) {
+                            UserAnnotation()
+                            ForEach(monuments, id: \.id) { monument in
+                                let coordinate = monument.coordinates.toCLLocationCoordinate2D()
+                                Annotation(monument.name, coordinate: coordinate) {
+                                    Button(action: {
+                                        // Show pop-up and set selected monument
+                                        selectedMonument = monument
+                                        isSheetPresented = false
+                                        isPopupVisible = true
+                                        
+                                        // Update camera position to focus on the tapped marker
+                                        withAnimation(.easeInOut(duration: 1.0)) {
+                                            cameraPosition = .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
+                                        }
+                                    }) {
+                                        Image("pin")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 40, height: 40)
+                                        //                                        .foregroundColor(.blue)
                                     }
-                                }) {
-                                    Circle()
-                                        .frame(width: 20, height: 20)
-                                        .foregroundColor(.blue)
                                 }
                             }
                         }
-                    }
-                    .disabled(isPopupVisible) // Disable map interaction when popup is visible
-                    .edgesIgnoringSafeArea(.top)
-                    .frame(maxHeight: .infinity)
-                    .onAppear {
-                        viewModel.checkIfLocationIsEnabled()
-                        isSheetPresented = true
-                    }
-                }
-                
-                // Display PlacePopupView when a monument is selected
-                if isPopupVisible, let monument = selectedMonument {
-                    MonumentDetail(
-                        isSheetPresented: $isSheetPresented,
-                        isPresented: $isPopupVisible,
-                        placeName: monument.name,
-                        onGetBadge: {
-                            print("Get Badge tapped for \(monument.name)")
-                            isPopupVisible = false // Hide popup if needed
-                        },
-                        onAddToWishlist: {
-                            print("Add to Wishlist tapped for \(monument.name)")
-                            isPopupVisible = false // Hide popup if needed
+                        .disabled(isPopupVisible) // Disable map interaction when popup is visible
+                        .edgesIgnoringSafeArea(.top)
+                        .frame(maxHeight: .infinity)
+                        .onAppear {
+                            viewModel.checkIfLocationIsEnabled()
+                            isSheetPresented = true
                         }
-                    )
-                    .transition(.move(edge: .bottom))
-                    .animation(.spring())
-                    .frame(width: 180) // Adjust the width as needed
-                    .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 4)
-                    .transition(.scale) // Smooth transition
+                    }
+                    
+                    // Display PlacePopupView when a monument is selected
+                    if isPopupVisible, let monument = selectedMonument {
+                        MonumentDetail(
+                            isSheetPresented: $isSheetPresented,
+                            isPresented: $isPopupVisible,
+                            placeName: monument.name,
+                            onGetBadge: {
+                                print("Get Badge tapped for \(monument.name)")
+                                isPopupVisible = false // Hide popup if needed
+                            },
+                            onAddToWishlist: {
+                                print("Add to Wishlist tapped for \(monument.name)")
+                                isPopupVisible = false // Hide popup if needed
+                            }
+                        )
+                        .transition(.move(edge: .bottom))
+                        .animation(.spring())
+                        .frame(width: 180) // Adjust the width as needed
+                        .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 4)
+                        .transition(.scale) // Smooth transition
+                    }
+                    else{
+                        MapButtonsView(navigateToProfile: $navigateToProfile, navigateToWishlist: $navigateToWishlist, isSheetPresented: $isSheetPresented)
+                    }
+                    
+                    // Mostrar ResultView sobre la vista principal
+                    if isResultPresented, let image = selectedImage, let result = detectionResult {
+                        ResultView(image: image, result: result, isPresented: $isResultPresented, isSheetPresented: $isSheetPresented, showImagePicker: $showImagePicker, showBadge: $showbadge)
+                            .frame(width: 300, height: 450)
+                            .cornerRadius(12)
+                            .shadow(radius: 10)
+                            .zIndex(2)
+                    }
+                    
+//                    // Mostrar popup de monumentos
+//                    if isPopupVisible, let monument = selectedMonument {
+//                        MonumentDetail(
+//                            isSheetPresented: $isSheetPresented, isPresented: $isPopupVisible,
+//                            placeName: monument.name,
+//                            onGetBadge: {
+//                                print("Get Badge tapped for \(monument.name)")
+//                                isPopupVisible = false
+//                            },
+//                            onAddToWishlist: {
+//                                print("Add to Wishlist tapped for \(monument.name)")
+//                                isPopupVisible = false
+//                            }
+//                        )
+//                        .transition(.move(edge: .bottom))
+//                        .animation(.spring())
+//                        .frame(width: 180)
+//                        .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 3)
+//                        .transition(.scale)
+//                    }
                 }
-                else{
-                    MapButtonsView(navigateToProfile: $navigateToProfile, navigateToWishlist: $navigateToWishlist, isSheetPresented: $isSheetPresented)
-                }
-            }
-            .navigationBarHidden(true)
-            .sheet(isPresented: $isSheetPresented) {
-                SearchView(isSheetPresented: $isSheetPresented)
-                    .presentationDetents([.height(40), .medium, .large])
-                    .presentationBackgroundInteraction(.enabled)
-                    .interactiveDismissDisabled() // makes sure the sheet cant be dismissed
-            }
-            .navigationDestination(
-                isPresented: $navigateToWishlist) {
-                    WishlistView()
-                    EmptyView()
-                        .hidden()
+                .navigationBarHidden(true)
+                .sheet(isPresented: $isSheetPresented) {
+                    SearchView(isSheetPresented: $isSheetPresented, selectedImage: $selectedImage, detectionResult: $detectionResult, isResultPresented: $isResultPresented, showImagePicker: $showImagePicker)
+                        .presentationDetents([.height(40), .medium, .large])
+                        .presentationBackgroundInteraction(.enabled)
+                        .interactiveDismissDisabled() // makes sure the sheet cant be dismissed
                 }
                 .navigationDestination(
-                    isPresented: $navigateToProfile) {
-                        UserProfileView()
-                        EmptyView()
-                            .hidden()
+                    isPresented: $navigateToWishlist) {
+                        WishlistView()
                     }
+                    .navigationDestination(
+                        isPresented: $navigateToProfile) {
+                            UserProfileView()
+                        }
+            }
+            else{
+                NewBadgeView(showBadge: $showbadge)
+                    .opacity(showbadge ? 1 : 0)
+            }
         }
     }
 }

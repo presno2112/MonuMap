@@ -10,16 +10,20 @@ import SwiftUI
 struct Root: View {
     
     @State private var showSignIn: Bool = false
+    //@StateObject private var authViewModel = AuthViewModel()
     
     var body: some View {
-        MapView()
-            .edgesIgnoringSafeArea(.top)
-            .onAppear(){
-                let authUser = try? AuthenticationManager.shared.getAuthenticadedUser()
-                self.showSignIn = authUser == nil
-            }
-            .fullScreenCover(isPresented: $showSignIn){
-                    LogInView(showSignIn: $showSignIn)
+        if(!showSignIn){
+            MapView()
+                .edgesIgnoringSafeArea(.top)
+                .onAppear(){
+                    let authUser = try? AuthenticationManager.shared.getAuthenticadedUser()
+                    self.showSignIn = authUser == nil
+                }
+        }
+        else{
+//            LogInView(showSignIn: $showSignIn)
+            LogInView()
         }
     }
 }
