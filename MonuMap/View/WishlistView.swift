@@ -36,37 +36,6 @@ struct WishlistView: View {
                             .font(.system(size: 20))
                     }.padding(.trailing, 20)
                 }
-                ScrollView{
-                    LazyVStack{
-                        ForEach(places.keys.sorted(), id: \.self){ city in
-                            VStack(alignment: .leading, spacing: 10){
-                                Text(city)
-                                    .font(.title2)
-                                    .foregroundStyle(Color("MainBlue"))
-                                    .bold()
-                                    .padding(.horizontal)
-                                ForEach(places[city]!, id: \.self) { place in
-                                    HStack(alignment: .top, spacing: 10){
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .frame(width: 160, height: 120)
-                                        VStack(alignment: .leading, spacing: 10){
-                                            Spacer()
-                                            Text(place)
-                                                .font(.headline)
-                                                .bold()
-                                            Text("description of the place")
-                                            Spacer()
-                                        }
-                                        Spacer()
-                                    }
-                                    .padding()
-                                }
-                            }
-                            .padding(.bottom, 30) // Extra space between cities
-                        }
-                    }
-                    .padding(.trailing, 20)
-                }
                 WishlistContentView(
                     places: places,
                     selectedFilter: selectedFilter,
