@@ -10,7 +10,7 @@ import SwiftUI
 struct LogInView: View {
     
     @StateObject var signInViewModel = SignInViewModel()
-//    @Binding var showSignIn: Bool
+    @Binding var showSignIn: Bool
     
     var body: some View {
         NavigationView{
@@ -73,7 +73,7 @@ struct LogInView: View {
                         }
                         do{
                             try await signInViewModel.SignIn()
-    //                        showSignIn = false
+                                showSignIn = false
                             return
                         }catch {
                             print(error)
@@ -122,8 +122,8 @@ struct TopLabeledStyleConfig: LabeledContentStyle {
     }
 }
 
-#Preview {
-    NavigationStack{
-        LogInView()
-    }
-}
+//#Preview {
+//    NavigationStack{
+//        LogInView()
+//    }
+//}

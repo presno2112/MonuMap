@@ -35,7 +35,7 @@ struct NewBadgeView: View {
                 
                 Spacer()
                 ZStack {
-                    Image(isFlipped ? "photoTaken" : unlockedBadge?.image ?? "")
+                    Image(unlockedBadge?.image ?? "")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -74,7 +74,7 @@ struct NewBadgeView: View {
                     Spacer()
                     VStack{
                         Button{
-                            inputImage = UIImage(named: unlockedBadge?.image ?? "coliseo")
+                            inputImage = UIImage(named: unlockedBadge?.image ?? "")
                             
                             guard let inputImage = inputImage else {
                                 print("Error: Could not load the image.")

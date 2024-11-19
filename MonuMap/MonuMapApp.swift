@@ -14,7 +14,7 @@ struct MonuMapApp: App{
     
     var body: some Scene {
         WindowGroup {
-            MapView()
+            Root()
         }
     }
 }
