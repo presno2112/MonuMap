@@ -74,7 +74,7 @@ struct ResultView: View {
                             try await userViewModel.loadCurrentUser() // Cargar el usuario primero
                             if let user = userViewModel.user {
                                 do {
-                                    try await userViewModel.addBadge("Badge Colosseum")
+                                    try await userViewModel.addBadge("badge test")
                                     print("Badge added successfully!")
                                 } catch {
                                     print("Failed to add badge: \(error.localizedDescription)")

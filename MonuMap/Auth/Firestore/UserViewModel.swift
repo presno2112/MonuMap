@@ -36,12 +36,19 @@ final class UserViewModel: ObservableObject {
     
     func addBadge(_ badgeName: String) async throws {
         guard let user = user else {
-            throw NSError(domain: "UserViewModelError", code: 401, userInfo: [NSLocalizedDescriptionKey: "User not loaded"])
+            throw NSError(domain: "", code: 1, userInfo: [NSLocalizedDescriptionKey: "User not loaded"])
         }
         
-        try await UserManager.shared.addBadgeToUser(userId: user.userId, badgeName: badgeName)
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(user.userId) // Asegúrate de tener `id` en tu modelo `User`
         
-        self.user?.badges.append("Badge \(badgeName)")
-        print("Badge added: \(badgeName)")
+        do {
+            try await userRef.setData([
+                "badges": FieldValue.arrayUnion([badgeName])
+            ], merge: true) 
+            print("Badge added successfully to user \(user.userId)")
+        } catch {
+            throw error
+        }
     }
 }

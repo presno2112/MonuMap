@@ -73,7 +73,7 @@ struct NewBadgeView: View {
                     Spacer()
                     VStack{
                         Button{
-                            inputImage = UIImage(named: "badge2")
+                            inputImage = UIImage(named: "Badge Colosseum")
                             
                             guard let inputImage = inputImage else {
                                 print("Error: Could not load the image.")
@@ -105,7 +105,7 @@ struct NewBadgeView: View {
                     Spacer()
                     VStack{
                         Button{
-                            inputImage = UIImage(named: "badge2")
+                            inputImage = UIImage(named: "Badge Colosseum")
                             
                             guard let inputImage = inputImage else {
                                 print("Error: Could not load the image.")
