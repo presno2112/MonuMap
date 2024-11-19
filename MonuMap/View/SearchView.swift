@@ -61,21 +61,6 @@ struct SearchView: View {
                     // Contenido principal
                     CityMonumentsView()
                     
-                    // Botón de logout
-//                    Button {
-//                        Task {
-//                            do {
-//                                try settingsViewModel.signOut()
-//                            } catch {
-//                                print(error)
-//                            }
-//                        }
-//                    } label: {
-//                        Image(systemName: "camera.circle.fill")
-//                            .font(.largeTitle)
-//                            .foregroundStyle(Color("MainBlue"))
-//                    }
-                    
                     Spacer()
                 }
                 .onAppear {
