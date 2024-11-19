@@ -14,6 +14,7 @@ struct MapView: View {
     @StateObject private var monumentViewModel = MonumentViewModel() // Use the existing view model
     @StateObject var viewModel = ContentViewModel()
     @StateObject var userViewModel = UserViewModel()
+    @State private var unlockedBadge: Badge? = nil
     @State private var isSheetPresented: Bool = true
     @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     
@@ -106,11 +107,12 @@ struct MapView: View {
                         ResultView(
                             image: image,
                             result: result,
-                            userViewModel: userViewModel,  // Aquí pasamos el viewModel
+                            userViewModel: userViewModel,
                             isPresented: $isResultPresented,
                             isSheetPresented: $isSheetPresented,
                             showImagePicker: $showImagePicker,
-                            showBadge: $showbadge
+                            showBadge: $showbadge,
+                            unlockedBadge: $unlockedBadge
                         )
                         .frame(width: 300, height: 450)
                         .cornerRadius(12)
@@ -135,8 +137,11 @@ struct MapView: View {
                         }
             }
             else{
-                NewBadgeView(showBadge: $showbadge)
-                    .opacity(showbadge ? 1 : 0)
+                NewBadgeView(
+                    showBadge: $showbadge,
+                    unlockedBadge: $unlockedBadge
+                )
+                .opacity(showbadge ? 1 : 0)
             }
         }
     }

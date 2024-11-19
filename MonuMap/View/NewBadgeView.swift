@@ -13,6 +13,7 @@ struct NewBadgeView: View {
     @State var isInfoPressed : Bool = false
     @State var isDownloaded : Bool = false
     @Binding var showBadge: Bool
+    @Binding var unlockedBadge: Badge?
     
     var body: some View {
         ZStack{
@@ -26,15 +27,15 @@ struct NewBadgeView: View {
                     .font(.title2)
                     .bold()
                     .padding(.horizontal)
-                Text("Roman Colosseum!")
+                Text("\(unlockedBadge?.name ?? "unknown")!")
                     .multilineTextAlignment(.center)
                     .font(.title)
                     .bold()
                     .padding(.horizontal)
-
+                
                 Spacer()
                 ZStack {
-                    Image(isFlipped ? "photoTaken" : "Badge Colosseum")
+                    Image(isFlipped ? "photoTaken" : unlockedBadge?.image ?? "")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -58,7 +59,7 @@ struct NewBadgeView: View {
                             .padding(16)
                         }
                     }
-                    Text("This is a very simple description to talk about the colosseum")
+                    Text(unlockedBadge?.description ?? "No description")
                         .multilineTextAlignment(.center)
                         .opacity(isInfoPressed ? 1 : 0)
                         .bold()
@@ -73,7 +74,7 @@ struct NewBadgeView: View {
                     Spacer()
                     VStack{
                         Button{
-                            inputImage = UIImage(named: "Badge Colosseum")
+                            inputImage = UIImage(named: unlockedBadge?.image ?? "coliseo")
                             
                             guard let inputImage = inputImage else {
                                 print("Error: Could not load the image.")
@@ -105,7 +106,7 @@ struct NewBadgeView: View {
                     Spacer()
                     VStack{
                         Button{
-                            inputImage = UIImage(named: "Badge Colosseum")
+                            inputImage = UIImage(named: unlockedBadge?.image ?? "coliseo")
                             
                             guard let inputImage = inputImage else {
                                 print("Error: Could not load the image.")
@@ -130,7 +131,7 @@ struct NewBadgeView: View {
                     }
                     Spacer()
                 }
-
+                
                 .padding(.bottom, 90)
             }
             .padding(.top, 80)
@@ -180,35 +181,35 @@ struct NewBadgeView: View {
         }
     }
     func shareImageToInstagramStories(image: UIImage) {
-            guard let imageData = image.pngData() else {
-                print("Unable to convert image to PNG data.")
-                return
-            }
-
-            let appID = "8414728331909057"
-
-            guard let urlScheme = URL(string: "instagram-stories://share?source_application=\(appID)") else {
-                print("Invalid URL scheme.")
-                return
-            }
-
-            if UIApplication.shared.canOpenURL(urlScheme) {
-                let pasteboardItems = [
-                    ["com.instagram.sharedSticker.backgroundImage": imageData]
-                ]
-
-                let pasteboardOptions: [UIPasteboard.OptionsKey: Any] = [
-                    .expirationDate: Date().addingTimeInterval(60 * 5)
-                ]
-
-                UIPasteboard.general.setItems(pasteboardItems, options: pasteboardOptions)
-                UIApplication.shared.open(urlScheme, options: [:], completionHandler: nil)
-            } else {
-                print("Instagram is not installed or cannot handle the URL.")
-            }
+        guard let imageData = image.pngData() else {
+            print("Unable to convert image to PNG data.")
+            return
         }
+        
+        let appID = "8414728331909057"
+        
+        guard let urlScheme = URL(string: "instagram-stories://share?source_application=\(appID)") else {
+            print("Invalid URL scheme.")
+            return
+        }
+        
+        if UIApplication.shared.canOpenURL(urlScheme) {
+            let pasteboardItems = [
+                ["com.instagram.sharedSticker.backgroundImage": imageData]
+            ]
+            
+            let pasteboardOptions: [UIPasteboard.OptionsKey: Any] = [
+                .expirationDate: Date().addingTimeInterval(60 * 5)
+            ]
+            
+            UIPasteboard.general.setItems(pasteboardItems, options: pasteboardOptions)
+            UIApplication.shared.open(urlScheme, options: [:], completionHandler: nil)
+        } else {
+            print("Instagram is not installed or cannot handle the URL.")
+        }
+    }
 }
 
-#Preview {
-    NewBadgeView(showBadge: .constant(false))
-}
+//#Preview {
+//    NewBadgeView(showBadge: .constant(false))
+//}
