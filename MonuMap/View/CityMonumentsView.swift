@@ -10,12 +10,11 @@ import SwiftUI
 struct MonumentView: View {
     let monument: Monument
     
-    @State private var isHeartFilled = false // Estado para seguir el estado del corazón
+    @State private var isHeartFilled = false
     
     var body: some View {
         VStack(spacing: 8) {
             ZStack(alignment: .topTrailing) {
-                // Imagen del monumento
                 Image(monument.name)
                     .resizable()
                     .scaledToFit()
@@ -73,13 +72,11 @@ struct CityMonumentsView: View {
                     LazyVStack(alignment: .leading, spacing: 16) {
                         ForEach(viewModel.citiesWithMonuments, id: \.city.id) { cityWithMonuments in
                             VStack(alignment: .leading, spacing: 8) {
-                                // Nombre de la ciudad
                                 Text(cityWithMonuments.city.name)
                                     .foregroundStyle(Color("MainBlue"))
                                     .font(.title2)
                                     .fontWeight(.bold)
                                     .padding(.horizontal)
-                                // Carrusel de monumentos
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack(spacing: 16) {
                                         ForEach(cityWithMonuments.monuments) { monument in
