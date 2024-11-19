@@ -34,7 +34,7 @@ struct NewBadgeView: View {
 
                 Spacer()
                 ZStack {
-                    Image(isFlipped ? "badge3" : "badge3")
+                    Image(isFlipped ? "photoTaken" : "Badge Colosseum")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)

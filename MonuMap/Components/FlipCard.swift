@@ -23,7 +23,7 @@ struct FlipCard: View {
             VStack{
                 Spacer()
                 ZStack {
-                    Image(isFlipped ? "Image 1" : selectedBadge?.image ?? "coliseo")
+                    Image(isFlipped ? "photoTaken" : selectedBadge?.image ?? "coliseo")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
