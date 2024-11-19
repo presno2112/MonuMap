@@ -10,6 +10,7 @@ import SwiftUI
 struct ResultView: View {
     var image: UIImage
     var result: String
+    @StateObject var userViewModel: UserViewModel
     @Binding var isPresented: Bool // Controlará la presentación de la vista
     @Binding var isSheetPresented: Bool
     @Binding var showImagePicker: Bool
@@ -68,7 +69,20 @@ struct ResultView: View {
                         isPresented = false
                         isSheetPresented = true
                         showBadge = true
-                        
+                        Task {
+                            // Asegurarse de que el usuario esté cargado antes de agregar el badge
+                            try await userViewModel.loadCurrentUser() // Cargar el usuario primero
+                            if let user = userViewModel.user {
+                                do {
+                                    try await userViewModel.addBadge("badge test")
+                                    print("Badge added successfully!")
+                                } catch {
+                                    print("Failed to add badge: \(error.localizedDescription)")
+                                }
+                            } else {
+                                print("User not loaded, cannot add badge")
+                            }
+                        }
                     } label: {
                         Text("Confirm")
                             .bold()

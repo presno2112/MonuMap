@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FlipCard: View {
     @Binding var showCard: Bool
+    @Binding var selectedBadge: Badge?
     @State private var isFlipped: Bool = false
     @State private var inputImage : UIImage?
     @State var isInfoPressed : Bool = false
@@ -22,7 +23,7 @@ struct FlipCard: View {
             VStack{
                 Spacer()
                 ZStack {
-                    Image(isFlipped ? "Image 1" : "badge2")
+                    Image(isFlipped ? "photoTaken" : selectedBadge?.image ?? "coliseo")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -53,7 +54,7 @@ struct FlipCard: View {
                             .padding(30)
                         }
                     }
-                    Text("This is a very simple description to talk about the colosseum")
+                    Text(selectedBadge?.description ?? "No info loaded")
                         .multilineTextAlignment(.center)
                         .opacity(isInfoPressed ? 1 : 0)
                         .bold()
@@ -163,6 +164,6 @@ struct FlipCard: View {
         }
 }
 
-#Preview {
-    FlipCard(showCard: .constant(true))
-}
+//#Preview {
+//    FlipCard(showCard: .constant(true), selectedBadge: <#Binding<Badge?>#>, )
+//}

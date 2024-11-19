@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct MonumentDetail: View {
-    @Binding var isSheetPresented : Bool
+    @Binding var isSheetPresented: Bool
     @Binding var isPresented: Bool
     let placeName: String
     var onGetBadge: () -> Void
     var onAddToWishlist: () -> Void
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack(spacing: 16) {
-            // Header Text
+            // Header Text with Dynamic Font Adjustment
             ZStack {
                 HStack {
                     Button {
@@ -24,19 +25,25 @@ struct MonumentDetail: View {
                         isSheetPresented = true
                     } label: {
                         Image(systemName: "chevron.backward")
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color("font"))
                     }
-                    .padding(.leading, 10) // Move the button closer to the left edge
+                    .padding(.leading, 10)
                     
                     Spacer()
                 }
                 
-                Text(placeName)
-                    .font(.title)
-                    .foregroundColor(.white)
-                    .bold()
+                GeometryReader { geometry in
+                    Text(placeName)
+                        .font(.system(size: dynamicFontSize(for: placeName, availableWidth: geometry.size.width)))
+                        .foregroundColor(Color("font"))
+                        .bold()
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .frame(maxWidth: geometry.size.width, alignment: .center)
+                }
+                .frame(height: 30) // Ensure enough height for the text
             }
-
+            
             HStack {
                 // Image Placeholder
                 RoundedRectangle(cornerRadius: 10)
@@ -52,7 +59,7 @@ struct MonumentDetail: View {
                             .foregroundColor(.white)
                             .padding()
                             .frame(width: 140, height: 40)
-                            .background(Color.white.opacity(0.3))
+                            .background(Color("MainBlue"))
                             .cornerRadius(15)
                     }
                     .padding(.bottom)
@@ -63,28 +70,35 @@ struct MonumentDetail: View {
                             .foregroundColor(.white)
                             .padding()
                             .frame(width: 140, height: 40)
-                            .background(Color.white.opacity(0.3))
+                            .background(Color("MainBlue"))
                             .cornerRadius(15)
                     }
                 }
             }
-            .padding(.horizontal, 10) // Extend buttons area slightly
-            
+            .padding(.horizontal, 10)
         }
-        .frame(width: 290) // Fixed width for background rectangle
+        .frame(width: 290)
         .padding()
-        .background(Color.gray)
+        .background(Color("backgrounds"))
+        .shadow(radius: 0.5)
         .cornerRadius(20)
         .overlay(
-            // Small triangle pointer below the pop-up
             Triangle()
-                .fill(Color.gray.opacity(0.9))
+                .fill(Color("backgrounds"))
                 .frame(width: 20, height: 10)
                 .rotationEffect(.degrees(180))
                 .offset(y: 12),
             alignment: .bottom
         )
         .shadow(radius: 10)
+    }
+    
+    /// Dynamically calculates the font size based on the text length and available width.
+    private func dynamicFontSize(for text: String, availableWidth: CGFloat) -> CGFloat {
+        let baseFontSize: CGFloat = 24 // Start with a base font size
+        let maxWidthForBaseFont: CGFloat = 200 // Assumed width for the base font size
+        let scaleFactor = min(1, availableWidth / maxWidthForBaseFont)
+        return baseFontSize * scaleFactor
     }
 }
 
@@ -100,11 +114,10 @@ struct Triangle: Shape {
     }
 }
 
-
 #Preview {
     MonumentDetail(
         isSheetPresented: .constant(false), isPresented: .constant(true),
-        placeName: "Coliseo",
+        placeName: "A Really Really Long Monument Name",
         onGetBadge: {
             print("Get Badge tapped")
         },
@@ -113,3 +126,4 @@ struct Triangle: Shape {
         }
     )
 }
+
