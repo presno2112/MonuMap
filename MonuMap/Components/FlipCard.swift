@@ -23,7 +23,7 @@ struct FlipCard: View {
             VStack{
                 Spacer()
                 ZStack {
-                    Image(isFlipped ? "photoTaken" : selectedBadge?.image ?? "coliseo")
+                    Image(isFlipped ? "photoTaken" : selectedBadge?.image ?? "")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -69,7 +69,7 @@ struct FlipCard: View {
                     Spacer()
                     VStack{
                         Button{
-                            inputImage = UIImage(named: "badge2")
+                            inputImage = UIImage(named: selectedBadge?.image ?? "coliseo")
                             
                             guard let inputImage = inputImage else {
                                 print("Error: Could not load the image.")
@@ -99,7 +99,7 @@ struct FlipCard: View {
                     Spacer()
                     VStack{
                         Button{
-                            inputImage = UIImage(named: "badge2")
+                            inputImage = UIImage(named: selectedBadge?.image ?? "coliseo")
                             
                             guard let inputImage = inputImage else {
                                 print("Error: Could not load the image.")

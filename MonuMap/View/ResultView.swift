@@ -11,10 +11,11 @@ struct ResultView: View {
     var image: UIImage
     var result: String
     @StateObject var userViewModel: UserViewModel
-    @Binding var isPresented: Bool // Controlará la presentación de la vista
+    @Binding var isPresented: Bool
     @Binding var isSheetPresented: Bool
     @Binding var showImagePicker: Bool
     @Binding var showBadge: Bool
+    @Binding var unlockedBadge: Badge?
     
     var body: some View {
         ZStack {
@@ -70,12 +71,17 @@ struct ResultView: View {
                         isSheetPresented = true
                         showBadge = true
                         Task {
-                            // Asegurarse de que el usuario esté cargado antes de agregar el badge
-                            try await userViewModel.loadCurrentUser() // Cargar el usuario primero
+                            try await userViewModel.loadCurrentUser() // Asegurarse de cargar el usuario
                             if let user = userViewModel.user {
                                 do {
-                                    try await userViewModel.addBadge("Badge Colosseum")
+                                    let badgeName = "Badge \(result)"
+                                    try await userViewModel.addBadge(badgeName)
                                     print("Badge added successfully!")
+                                    
+                                    // Obtener el Badge desde Firebase
+                                    if let badge = try await BadgeManager.shared.getBadge(named: badgeName) {
+                                        unlockedBadge = badge // Pasar el Badge desbloqueado
+                                    }
                                 } catch {
                                     print("Failed to add badge: \(error.localizedDescription)")
                                 }
@@ -90,7 +96,6 @@ struct ResultView: View {
                             .frame(width: 120, height: 35)
                             .background(Color("MainBlue"))
                             .cornerRadius(10)
-//                            .padding(.horizontal)
                     }
                 }
                 .padding(.horizontal)
