@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 @MainActor
 final class UserViewModel: ObservableObject {
@@ -21,6 +22,7 @@ final class UserViewModel: ObservableObject {
             print("User not loaded")
             return []
         }
+        print("User badges: \(user.badges)")
         return user.badges
     }
     
@@ -30,5 +32,16 @@ final class UserViewModel: ObservableObject {
             return []
         }
         return user.monuments
+    }
+    
+    func addBadge(_ badgeName: String) async throws {
+        guard let user = user else {
+            throw NSError(domain: "UserViewModelError", code: 401, userInfo: [NSLocalizedDescriptionKey: "User not loaded"])
+        }
+        
+        try await UserManager.shared.addBadgeToUser(userId: user.userId, badgeName: badgeName)
+        
+        self.user?.badges.append("Badge \(badgeName)")
+        print("Badge added: \(badgeName)")
     }
 }

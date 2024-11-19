@@ -13,8 +13,8 @@ struct DBUser: Codable {
     let email: String?
     let photoUrl: String?
     let name: String?
-    let badges: [String]
-    let monuments: [String]
+    var badges: [String]
+    var monuments: [String]
     
     init(auth: AuthDataResultModel, name: String? = nil, badges: [String] = [], monuments: [String] = []) {
         self.userId = auth.uid
@@ -62,5 +62,11 @@ final class UserManager{
     func getCurrentUser() async throws -> DBUser {
         let authDataResult = try AuthenticationManager.shared.getAuthenticadedUser()
         return try await getUser(userId: authDataResult.uid)
+    }
+    
+    func addBadgeToUser(userId: String, badgeName: String) async throws {
+        try await userDocument(userId: userId).updateData([
+            "badges": FieldValue.arrayUnion([badgeName])
+        ])
     }
 }

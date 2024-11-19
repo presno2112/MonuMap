@@ -132,6 +132,7 @@ struct MapView: View {
     ]
     
     @StateObject var viewModel = ContentViewModel()
+    @StateObject var userViewModel = UserViewModel()
     @State private var isSheetPresented: Bool = true
     @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     
@@ -216,11 +217,19 @@ struct MapView: View {
                     
                     // Mostrar ResultView sobre la vista principal
                     if isResultPresented, let image = selectedImage, let result = detectionResult {
-                        ResultView(image: image, result: result, isPresented: $isResultPresented, isSheetPresented: $isSheetPresented, showImagePicker: $showImagePicker, showBadge: $showbadge)
-                            .frame(width: 300, height: 450)
-                            .cornerRadius(12)
-                            .shadow(radius: 10)
-                            .zIndex(2)
+                        ResultView(
+                            image: image,
+                            result: result,
+                            userViewModel: userViewModel,  // Aquí pasamos el viewModel
+                            isPresented: $isResultPresented,
+                            isSheetPresented: $isSheetPresented,
+                            showImagePicker: $showImagePicker,
+                            showBadge: $showbadge
+                        )
+                        .frame(width: 300, height: 450)
+                        .cornerRadius(12)
+                        .shadow(radius: 10)
+                        .zIndex(2)
                     }
                     
 //                    // Mostrar popup de monumentos

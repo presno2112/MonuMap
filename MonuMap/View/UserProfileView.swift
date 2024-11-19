@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct UserProfileView: View {
+    @StateObject private var userViewModel = UserViewModel()
+    @StateObject private var badgeViewModel = BadgeViewModel()
+    @State var selectedBadge: Badge?
     @State var showCard: Bool = false
     var rectangles = [1, 2, 3, 4]
-    var images  = ["badge3", "badge4", "badge2", "badge1"]
+    var images  = ["Badge Colosseum", "Badge Maradona Mural", "Badge Pizzeria Da Michele", "Badge Basilica Di San Pietro"]
     
     let columns = [
         GridItem(.flexible()),
@@ -32,22 +35,32 @@ struct UserProfileView: View {
                         .foregroundStyle(Color("MainBlue"))
                     
                     LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(images, id: \.self) { image in
+                        ForEach(badgeViewModel.badges) { badge in
                             Button{
+                                selectedBadge = badge
                                 withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
                                     showCard.toggle()
+                                    
                                 }
                             }label: {
-                                BadgeView(image: image)
-                                }
+                                BadgeView(image: badge.image)
+                            }
                         }
                     }
                     .padding()
                 }
             }
+            .onAppear {
+                Task {
+                    try await userViewModel.loadCurrentUser()  // Cargar el usuario actual
+                    let badgeNames = userViewModel.getBadges()  // Obtener los nombres de los badges
+                    await badgeViewModel.loadBadges(for: badgeNames)  // Cargar los badges con esos nombres
+                    print("Loaded badges: \(badgeViewModel.badges)")
+                }
+            }
         }
         .sheet(isPresented: $showCard) {
-            FlipCard(showCard: $showCard)
+            FlipCard(showCard: $showCard, selectedBadge: $selectedBadge)
                 .transition(.scale(scale: 0.1, anchor: .center)) // Scale transition for pop effect
                 .animation(.spring(response: 0.5, dampingFraction: 0.7))
         }
