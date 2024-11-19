@@ -58,7 +58,7 @@ struct MonumentView: View {
 struct CityMonumentsView: View {
     @StateObject private var viewModel = MonumentViewModel()
     
-    var body: some View {
+    var body: some View { 
         NavigationView {
             ScrollView {
                 if viewModel.isLoading {
